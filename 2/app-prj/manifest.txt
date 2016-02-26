@@ -1,0 +1,2 @@
+Main-Class: StocksCore
+Class-Path: bin/ coolserver.jar
