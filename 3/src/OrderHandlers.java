@@ -66,18 +66,9 @@ class OrderSellHandler extends OrderHandlers {
 			return;
 		}
 
-		Order curr = null;
-
-		if (type.equals("GTC")) 
-			curr = new GTC_Order(user, symb, price, quantity, type, OrderCommand.BUY);
-		else if (type.equals("IOC")) 
-			curr = new IOC_Order(user, symb, price, quantity, type, OrderCommand.BUY);
-		else if (type.equals("MPO")) 
-			curr = new MPO_Order(user, symb, price, quantity, type, OrderCommand.BUY);
-		else
-			curr = new GTC_Order(user, symb, price, quantity, type, OrderCommand.BUY);
-
-
+		Order curr = StocksCore.getInstance().getOrderNewInstance(type.toString());
+		curr.init(user, symb, price, quantity, type, OrderCommand.SELL);
+		
 		user.addOrder(curr);
 		curr.Exchange(out);
 	}
@@ -95,17 +86,8 @@ class OrderBuyHandler extends OrderHandlers {
 			return;
 		}
 
-		Order curr = null;
-
-		if (type.equals("GTC")) 
-			curr = new GTC_Order(user, symb, price, quantity, type, OrderCommand.BUY);
-		else if (type.equals("IOC")) 
-			curr = new IOC_Order(user, symb, price, quantity, type, OrderCommand.BUY);
-		else if (type.equals("MPO")) 
-			curr = new MPO_Order(user, symb, price, quantity, type, OrderCommand.BUY);
-		else
-			curr = new GTC_Order(user, symb, price, quantity, type, OrderCommand.BUY);
-
+		Order curr = StocksCore.getInstance().getOrderNewInstance(type.toString());
+		curr.init(user, symb, price, quantity, type, OrderCommand.BUY);
 
 		user.addOrder(curr);
 		curr.Exchange(out);

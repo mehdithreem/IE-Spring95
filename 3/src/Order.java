@@ -23,7 +23,7 @@ public abstract class Order {
 	private OrderStatus status;
 	private OrderCommand command;
 
-	protected Order(User _owner
+	public void init(User _owner
 			,Symbol _instrument
 			,Integer _price
 			,Integer _quantity

@@ -1,7 +1,7 @@
 # curl "http://localhost:9091/order/sell?id=1&instrument=RENA1&price=130&quantity=40&type=GTC"
 # curl "http://localhost:9091/customer/add?id=2&name=A&family=B"
 # curl "http://localhost:9091/customer/deposite?id=2&amount=200"
-# curl "http://localhost:9091/order/buy?id=2&instrument=RENA1&price=10&quantity=1&type=MPO"
+# curl "http://localhost:9091/order/buy?id=2&instrument=RENA1&price=140&quantity=1&type=IOC"
 
 # curl "http://localhost:9091/customer/add?id=2&name=A&family=A"
 # curl "http://localhost:9091/customer/add?id=3&name=B&family=A"

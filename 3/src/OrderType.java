@@ -5,15 +5,16 @@ class OrderType {
 	private static Set<String> types= new HashSet<String>();
 	private String myType;
 
-	public OrderType(String type) {
+	private OrderType(String type) {
 		myType = type;
 	}
 
 	public boolean equals(Object o) {
-		if (o == null || !(o instanceof OrderType) || !(o instanceof String))
+		if (o == null || (!(o instanceof OrderType) && !(o instanceof CharSequence))){
 			return false;
+		}
 
-		if (o instanceof String) {
+		if (o instanceof CharSequence) {
 			String str = (String)o;
 			if (myType.equals(str))
 				return true;
@@ -27,6 +28,10 @@ class OrderType {
 			else
 				return false;
 		}
+	}
+
+	public String toString() {
+		return myType;
 	}
 
 	public static OrderType valueOf(String input) throws IllegalArgumentException {

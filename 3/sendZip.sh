@@ -1,0 +1,1 @@
+java -jar SendHTTPPOSTPacket-1.0.0-SNAPSHOT.jar -u http://localhost:9091/config/uploadzip -f $1
