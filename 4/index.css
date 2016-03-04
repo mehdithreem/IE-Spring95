@@ -5,33 +5,63 @@ body,html {
 	align-items: stretch;
 }
 
-div.footer {
+.footer {
 	height: 30px;
 }
 
-div.container {
+.container {
 	height: 100%;
 	direction: rtl;
 	display: flex;
 	flex-direction: row;
 }
 
-div.nav {
+.nav-toggle {
 	width: 25%;
 	display: flex;
+	flex-direction: row-reverse;
+}
+
+.nav {
+	display: flex;
 	flex-direction: column;
+	width: 100%;
 	display: block;
 	background-color: Gold;
 	text-align: center;
 	color : Coral;
 }
 
-div.nav .links{
+.nav-toggle:target {
+	width: inherit;
+}
+
+.nav-toggle:target .nav {
+	display: none;
+}
+
+.toggle-box a.show-menu {
+	display: none;
+}
+
+.nav-toggle:target .toggle-box a.show-menu {
+	display: block;
+}
+
+.toggle-box a.hide-menu {
+	display: block;
+}
+
+.nav-toggle:target .toggle-box a.hide-menu {
+	display: none;
+}
+
+.nav .links{
 	display: flex;
 	flex-direction: column;
 }
 
-div.nav .button{
+.nav .button{
 	color : Gold;
 	background-color: Coral;
 	/*margin: 10px;
@@ -45,13 +75,13 @@ div.nav .button{
 	text-decoration: none;
 }
 
-div.main {
+.main {
 	display: flex;
 	flex-direction: column;
-	width: 75%;
+	width: 100%;
 }
 
-div.main .header{
+.main .header{
 	display: flex;
 	flex-direction: row;
 	padding-left: 30px;
@@ -61,38 +91,38 @@ div.main .header{
 	/*flex-grow: 1;*/
 }
 
-div.header .header-title {
+.header .header-title {
 	align-self: flex-start;
 	flex-grow: 1;
 }
 
-div.header .logo {
+.header .logo {
 	width: 100px;
 	height: 100px;
 	align-self: flex-end;
 }
 
-div.header .fade-box {
+.header .fade-box {
 	position: relative;
 	height: 100px;
 }
 
-div.header .fade-box img{
+.header .fade-box img{
 	transition: opacity 1s ease-in-out;
 	position: absolute;
 	left: 0;
 	background-color: white;
 }
 
-div.header .fade-box #ut {
+.header .fade-box #ut {
 	opacity: 1;
 }
 
-div.header .fade-box #ut:hover {
+.header .fade-box #ut:hover {
 	opacity: 0;
 }
 
-div.main .content {
+.main .content {
 	padding-left: 30px;
 	padding-right: 30px;
 	padding-top: 10px;
