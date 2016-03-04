@@ -44,51 +44,48 @@
 	<div class="content">
 		<form>
 			<div class="form-group">
-			<label for="ID">ID</label>
-			<input type="text" class="form-control" id="ID" placeholder="ID">
+				<label for="ID">شناسه</label>
+				<input type="text" class="form-control" id="ID" placeholder="شناسه">
 			</div>
 			<div class="form-group">
-			<label for="instrument">Instrument</label>
-			<input type="text" class="form-control" id="instrument" placeholder="Instrument">
+				<label for="instrument">شرکت</label>
+				<input type="text" class="form-control" id="instrument" placeholder="شرکت">
+			</div>
+		</form>
+
+		<form class="form-inline">
+			<div class="form-group">
+				<label for="price">قیمت</label>
+				<div class="input-group">
+					<input type="text" class="form-control" id="exampleInputAmount" placeholder="قیمت ">
+					<div class="input-group-addon"> ریال</div>
+				</div>
+			</div>
+		</form>
+
+		<form class="form-inline">
+			<div class="form-group">
+				<label for="quantity">تعداد</label>
+				<div class="input-group">
+					<input type="number" class="form-control" id="exampleInputAmount" placeholder="0">
+				</div>
+			</div>
+		</form>
+
+		<form>
+			<label for="Type">نوع</label>	
+			<div class="radio">
+				<label><input type="radio" name="optionsRadios" id="type" value="GTC" checked></label><label>GTC</label>
 			</div>
 			<div class="radio">
-			<label>
-			<input type="radio" name="optionsRadios" id="type" value="GTC" checked>
-			GTC
-			</label>
-		</div>
-
-		<form class="form-inline">
-			<div class="form-group">
-				<label class="sr-only" for="exampleInputAmount"> Price</label>
-				<div class="input-group">
-					<div class="input-group-addon"> ریال</div>
-					<input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
-				</div>
+				<label><input type="radio" name="optionsRadios" id="type" value="IOC"></label><label>IOC</label>
+			</div>
+			<div class="radio disabled">
+				<label><input type="radio" name="optionsRadios" id="type" value="MPO"></label><label>MPO</label>
 			</div>
 		</form>
 
-		<form class="form-inline">
-			<div class="form-group">
-				<label class="sr-only" for="exampleInputAmount"> Quantity</label>
-				<div class="input-group">
-					<input type="text" class="form-control" id="exampleInputAmount" placeholder="1">
-				</div>
-			</div>
-		</form>
-
-		<div class="radio">
-			<label>
-			<input type="radio" name="optionsRadios" id="type" value="IOC">
-			IOC
-			</label>
-		</div>
-		<div class="radio disabled">
-			<label>
-			<input type="radio" name="optionsRadios" id="type" value="MPO">
-			MPO
-			</label>
-		</div>
+		<form>
 			<button type="submit" class="btn btn-default">Submit</button>
 		</form>
 	</div>
