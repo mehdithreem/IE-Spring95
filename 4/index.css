@@ -1,7 +1,20 @@
+@font-face{
+	font-family: DroidNaskh;
+	src: url('stuff/DroidNaskh-Regular.ttf');
+	font-weight: normal;
+}
+
+@font-face{
+	font-family: DroidNaskh;
+	src: url('stuff/DroidNaskh-Bold.ttf');
+	font-weight: bold;
+}
+
 body,html {
 	height: 100%;
 	direction: rtl;
 	background-color: #f2f2f2;
+	font-family: DroidNaskh;
 }
 
 .footer {
@@ -61,7 +74,7 @@ body,html {
 }
 
 .nav .button:hover{
-	background-color: #3F51B5;
+	background-color: #232e76;
 }
 
 .main, .footer {
@@ -79,6 +92,7 @@ body,html {
 
 .header .header-title {
 	align-self: flex-start;
+	padding-right: 20px;
 	flex-grow: 1;
 }
 
