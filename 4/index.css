@@ -1,0 +1,102 @@
+body,html {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+div.footer {
+	height: 30px;
+}
+
+div.container {
+	height: 100%;
+	direction: rtl;
+	display: flex;
+	flex-direction: row;
+}
+
+div.nav {
+	width: 25%;
+	display: flex;
+	flex-direction: column;
+	display: block;
+	background-color: Gold;
+	text-align: center;
+	color : Coral;
+}
+
+div.nav .links{
+	display: flex;
+	flex-direction: column;
+}
+
+div.nav .button{
+	color : Gold;
+	background-color: Coral;
+	/*margin: 10px;
+	padding: 5px;*/
+	border-style: outset;
+	font-size: 20px;
+	text-align: center;
+	align-self: center;
+	width: 95%;
+	height: 30px;
+	text-decoration: none;
+}
+
+div.main {
+	display: flex;
+	flex-direction: column;
+	width: 75%;
+}
+
+div.main .header{
+	display: flex;
+	flex-direction: row;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	/*flex-grow: 1;*/
+}
+
+div.header .header-title {
+	align-self: flex-start;
+	flex-grow: 1;
+}
+
+div.header .logo {
+	width: 100px;
+	height: 100px;
+	align-self: flex-end;
+}
+
+div.header .fade-box {
+	position: relative;
+	height: 100px;
+}
+
+div.header .fade-box img{
+	transition: opacity 1s ease-in-out;
+	position: absolute;
+	left: 0;
+	background-color: white;
+}
+
+div.header .fade-box #ut {
+	opacity: 1;
+}
+
+div.header .fade-box #ut:hover {
+	opacity: 0;
+}
+
+div.main .content {
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: red;
+}
+
