@@ -13,7 +13,7 @@ public class StocksCore {
 		users = new HashMap<Integer,User>();
 		symbols = new HashMap<String,Symbol>();
 		exchangeHandlers = new HashMap<String, Class<? extends Order>>();
-		// csvWriter = new FileWriter("backup.csv", true);
+		csvWriter = new FileWriter("backup.csv");
 
 		users.put(1, Admin.getInstance());
 	}
