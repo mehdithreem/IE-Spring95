@@ -1,13 +1,9 @@
 <div class="main">
-			<div class="header">
-				<h1 class="header-title"><c:out value="${param.headerVar}"></h1>
-				<div class="fade-box">
-					<img class="logo" id="seo" src="stuff/seologo.png" alt="" />
-					<img class="logo" id="ut" src="stuff/utlogo.png" alt=""/>
-				</div>
-			</div>
+			<jsp:include page="header.jsp">
+				<jsp:param name="headerVar" value="${param.headerVar}" />
+			</jsp:include>
 			<div class="content">
-				<form class="form-horizontal my-form" action="sell_buy.jsp" method="POST">
+				<form class="form-horizontal my-form" action="${param.action}" method="POST">
 					<div class="form-group">
 						<label for="id">شناسه</label>
 						<input type="text" class="form-control" name="id" id="id" placeholder="شناسه">
@@ -47,7 +43,7 @@
 					</div>
 
 					<div class="form-group">
-						<button type="submit" class="btn btn-default submit-btn"><c:out value="${param.submitVar}"></button>
+						<button type="submit" class="btn btn-default submit-btn"><c:out value="${param.submitVar}"/></button>
 					</div>
 				</form>
 			</div>
