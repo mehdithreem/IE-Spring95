@@ -5,7 +5,7 @@ public class ToAdminRequestRepository {
 	private Map<Integer,ToAdminRequest> requests;
 	private Integer counter = 0;
 
-	private static ToAdminRequestRepository rep = new ToAdminRequestRepository();
+	private static ToAdminRequestRepository repo = new ToAdminRequestRepository();
 
 	private ToAdminRequestRepository() {
 		requests = new HashMap<Integer, ToAdminRequest>();
@@ -16,8 +16,8 @@ public class ToAdminRequestRepository {
 	}
 
 	public void addNew(Integer id, Integer amount) {
-		requests.put(couter, new ToAdminRequest(counter, id, amount));
-		couter++;
+		requests.put(counter, new ToAdminRequest(counter, id, amount));
+		counter++;
 	}
 
 	public void accept(Integer reqID) {
@@ -29,7 +29,7 @@ public class ToAdminRequestRepository {
 		requests.remove(reqID);
 	}
 
-	public List<ToAdminRequest> getAll() {
+	public Collection<ToAdminRequest> getAll() {
 		return requests.values();
 	}
 	

@@ -1,9 +1,13 @@
 import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 
 abstract class OrderHandlers extends CommandHandler {
 	protected User user;
 	protected OrderType type;
 	protected Symbol symb;
+	protected String instrStr;
 	protected Integer price;
 	protected Integer quantity;
 
@@ -60,9 +64,9 @@ abstract class OrderHandlers extends CommandHandler {
 
 @WebServlet("/sell-controll")
 class OrderSellHandler extends OrderHandlers {
-	public Boolean exchange(PrintWriter out, Boolean hasError) throws IOException{
+	public Boolean exchange(PrintWriter out) throws IOException{
 		if (symb == null && user.isAdmin()) {
-			symb = StocksCore.getInstance().addSymbol(params.get("instrument"));
+			symb = StocksCore.getInstance().addSymbol(instrStr);
 		}
 		
 		if (!user.hasEnoughShare(symb, quantity)) {
@@ -76,15 +80,15 @@ class OrderSellHandler extends OrderHandlers {
 		user.addOrder(curr);
 		curr.Exchange(out);
 
-		retrun true;
+		return true;
 	}
 }
 
 @WebServlet("/buy-controll")
 class OrderBuyHandler extends OrderHandlers {
-	public void exchange(PrintWriter out) throws IOException{
+	public Boolean exchange(PrintWriter out) throws IOException{
 		if (symb == null && user.isAdmin()) {
-			symb = StocksCore.getInstance().addSymbol(params.get("instrument"));
+			symb = StocksCore.getInstance().addSymbol(instrStr);
 		}
 		
 		if (!user.withdraw(price)) {

@@ -1,5 +1,7 @@
-import ir.ramtung.coolserver.*;
 import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 
 @WebServlet("/add-user")
 class CustomerAddHandler extends CommandHandler {
@@ -27,7 +29,7 @@ class CustomerAddHandler extends CommandHandler {
 
 @WebServlet("/deposit-user")
 class CustomerDepositHandler extends CommandHandler {
-	public void execute(PrintWriter out) throws IOException{
+	public void execute(PrintWriter out, HttpServletRequest request, HttpServletResponse response, Boolean hasError) throws IOException{
 		StocksCore sc = StocksCore.getInstance();
 		String idStr = request.getParameter("id");
 		String amountStr = request.getParameter("amount");
@@ -46,7 +48,7 @@ class CustomerDepositHandler extends CommandHandler {
 			hasError = true;
 		}
 		else{
-			ToAdminRequestReposeitory.getInstance().addNew(id, amount);
+			ToAdminRequestRepository.getInstance().addNew(id, amount);
 			out.println("Request sent to admin");
 		}
 		return;

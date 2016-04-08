@@ -5,7 +5,6 @@ fi
 
 APP_CONTEXT=stocks
 
-rm -rf $CATALINA_HOME/webapps/$APP_CONTEXT/*
+rm -rf $CATALINA_HOME/webapps/$APP_CONTEXT/
 mkdir $CATALINA_HOME/webapps/$APP_CONTEXT/
 cp -r target/* $CATALINA_HOME/webapps/$APP_CONTEXT/
-cp grades.csv $CATALINA_HOME/webapps/$APP_CONTEXT/WEB-INF

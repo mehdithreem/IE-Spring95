@@ -6,7 +6,7 @@ public class StocksCore {
 	private Map<String, Symbol> symbols;
 	private Map<String, Class<? extends Order>> exchangeHandlers;
 	
-	private static StocksCore stocksCore = new StocksCore();
+	private static StocksCore stocksCore = null;
 
 	private StocksCore(){
 		users = new HashMap<Integer,User>();
@@ -17,6 +17,9 @@ public class StocksCore {
 	}
 
 	public static StocksCore getInstance(){
+		if (stocksCore == null) {
+			stocksCore = new StocksCore();
+		}
 		return stocksCore;
 	}
 
@@ -40,7 +43,7 @@ public class StocksCore {
 		return symbols.get(id);
 	}
 
-	public List<Symbol> getAllSymbols() {
+	public Collection<Symbol> getAllSymbols() {
 		return symbols.values();
 	}
 

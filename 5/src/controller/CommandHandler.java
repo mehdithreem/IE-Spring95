@@ -13,10 +13,10 @@ public abstract class CommandHandler extends HttpServlet {
 		execute(new PrintWriter(sw, true), request, response, hasError);
 
 		if (hasError) {
-			request.setAtrribute("errorMessage", sw.toString());
+			request.setAttribute("errorMessage", sw.toString());
 			request.getRequestDispatcher("error.jsp").forward(request, response);
 		} else {
-			request.setAtrribute("message", sw.toString());
+			request.setAttribute("message", sw.toString());
 			request.getRequestDispatcher("message.jsp").forward(request, response);
 		}
 	}

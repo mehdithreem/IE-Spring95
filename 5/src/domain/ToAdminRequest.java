@@ -6,7 +6,7 @@ public class ToAdminRequest {
 	Integer amount;
 	Integer reqID;
 
-	ToAdminRequest(Interger _reqID, Integer _id, Integer _amount) {
+	ToAdminRequest(Integer _reqID, Integer _id, Integer _amount) {
 		id = _id;
 		amount = _amount;
 		reqID = _reqID;
