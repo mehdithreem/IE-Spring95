@@ -1,72 +1,85 @@
 import ir.ramtung.coolserver.*;
 import java.io.*;
 
+@WebServlet("/add-user")
 class CustomerAddHandler extends CommandHandler {
-	public void execute(PrintWriter out) throws IOException{
+	public void execute(PrintWriter out, HttpServletRequest request, HttpServletResponse response, Boolean hasError) throws IOException{
 		StocksCore sc = StocksCore.getInstance();
-		String idStr = params.get("id");
-		String nameStr = params.get("name");
-		String familyStr = params.get("family");
+		String idStr = request.getParameter("id");
+		String nameStr = request.getParameter("name");
+		String familyStr = request.getParameter("family");
 		if (idStr == null || nameStr==null || familyStr==null) {
-			setResCode(404);
+			response.setStatus(404);
 			out.println("Mismatched parameters");
+			hasError = true;
 			return;
 		}
-		if(! sc.addUser(Integer.parseInt(idStr),nameStr,familyStr) )
+		if(! sc.addUser(Integer.parseInt(idStr),nameStr,familyStr) ) {
 			out.println("Repeated id");
+			hasError = true;
+		}
 		else
 			out.println("New user is added");
-		setResCode(200);
+		response.setStatus(200);
 		return;
 	}
 }
 
+@WebServlet("/deposit-user")
 class CustomerDepositHandler extends CommandHandler {
 	public void execute(PrintWriter out) throws IOException{
 		StocksCore sc = StocksCore.getInstance();
-		String idStr = params.get("id");
-		String amountStr = params.get("amount");
+		String idStr = request.getParameter("id");
+		String amountStr = request.getParameter("amount");
 		if(idStr==null || amountStr==null) {
-			setResCode(404);
+			response.setStatus(404);
 			out.println("Mismatched parameters");
+			hasError = true;
 			return;
 		}
-		setResCode(200);
+		response.setStatus(200);
 		Integer id = Integer.parseInt(idStr);
 		Integer amount = Integer.parseInt(amountStr);
 		User user = sc.findUser(id);
-		if(user == null)
+		if(user == null) {
 			out.println("Unknown user id");
+			hasError = true;
+		}
 		else{
-			user.deposit(amount);
-			out.println("Successful");
+			ToAdminRequestReposeitory.getInstance().addNew(id, amount);
+			out.println("Request sent to admin");
 		}
 		return;
 	}
 }
 
-class CustomerWithdrawHandler extends CommandHandler {
-	public void execute(PrintWriter out) throws IOException{
-		StocksCore sc = StocksCore.getInstance();
-		String idStr = params.get("id");
-		String amountStr = params.get("amount");
-		if(idStr==null || amountStr==null) {
-			setResCode(404);
-			out.println("Mismatched parameters");
-			return;
-		}
-		setResCode(200);
-		Integer id = Integer.parseInt(idStr);
-		Integer amount = Integer.parseInt(amountStr);
-		User user = sc.findUser(id);
-		if(user == null)
-			out.println("Unknown user id");
-		else if(!user.withdraw(amount))
-			out.println("Not enough money");
-		else
-			out.println("Successful");
-		return;
-	}
-}
+// class CustomerWithdrawHandler extends CommandHandler {
+// 	public void execute(PrintWriter out) throws IOException{
+// 		StocksCore sc = StocksCore.getInstance();
+// 		String idStr = request.getParameter("id");
+// 		String amountStr = request.getParameter("amount");
+// 		if(idStr==null || amountStr==null) {
+// 			response.setStatus(404);
+// 			out.println("Mismatched parameters");
+// 			hasError = true;
+// 			return;
+// 		}
+// 		response.setStatus(200);
+// 		Integer id = Integer.parseInt(idStr);
+// 		Integer amount = Integer.parseInt(amountStr);
+// 		User user = sc.findUser(id);
+// 		if(user == null) {
+// 			out.println("Unknown user id");
+// 			hasError = true;
+// 		}
+// 		else if(!user.withdraw(amount)) {
+// 			out.println("Not enough money");
+// 			hasError = true;
+// 		}
+// 		else
+// 			out.println("Successful");
+// 		return;
+// 	}
+// }
 
 

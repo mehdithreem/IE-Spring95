@@ -7,7 +7,7 @@ abstract class OrderHandlers extends CommandHandler {
 	protected Integer price;
 	protected Integer quantity;
 
-	protected void execute(PrintWriter out, HttpServletRequest request, HttpServletResponse response, Boolean hasError) throws IOException{
+	public void execute(PrintWriter out, HttpServletRequest request, HttpServletResponse response, Boolean hasError) throws IOException{
 		StocksCore sc = StocksCore.getInstance();
 
 		String idStr = request.getParameter("id");
