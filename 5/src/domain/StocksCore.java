@@ -40,6 +40,10 @@ public class StocksCore {
 		return symbols.get(id);
 	}
 
+	public List<Symbol> getAllSymbols() {
+		return symbols.values();
+	}
+
 	public void loadExchanges(String serviceRootFolder) {
 		File root = new File(serviceRootFolder);
 		String[] classes = root.list(new FilenameFilter() {

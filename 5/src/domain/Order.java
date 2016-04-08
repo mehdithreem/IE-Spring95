@@ -44,6 +44,10 @@ public abstract class Order {
 		return price;
 	}
 
+	public User getOwner() {
+		return owner;
+	}
+	
 	public void setPrice(Integer newPrice) {
 		price = newPrice;
 	}
