@@ -1,6 +1,8 @@
 <%@page import="java.util.*"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page isELIgnored="false" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html>
@@ -20,7 +22,9 @@
 
 <div class="main">
 
-	<jsp:include page="header.jsp" />
+	<jsp:include page="header.jsp">
+		<jsp:param name="headerVar" value="اطلاعات نماد‌ها" />
+	</jsp:include>
 
 	<div class="content">
 		<c:forEach var="symb" items="${symbols}">

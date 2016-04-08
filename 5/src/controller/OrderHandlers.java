@@ -21,7 +21,7 @@ abstract class OrderHandlers extends CommandHandler {
 		String qntStr = request.getParameter("quantity");
 
 		if (idStr == null || instrStr == null || priceStr == null || qntStr == null || typeStr == null) {
-			response.setStatus(404);
+			// response.setStatus(404);
 			out.println("Mismatched parameters");
 			hasError = true;
 			return;
@@ -29,7 +29,7 @@ abstract class OrderHandlers extends CommandHandler {
 
 		user = sc.findUser(Integer.parseInt(idStr));
 		if (user == null) {
-			response.setStatus(200);
+			// response.setStatus(200);
 			out.println("Unkown user id");
 			hasError = true;
 			return;
@@ -38,7 +38,7 @@ abstract class OrderHandlers extends CommandHandler {
 		try {
 			type = OrderType.valueOf(typeStr);
 		} catch (IllegalArgumentException e) {
-			response.setStatus(200);
+			// response.setStatus(200);
 			out.println("Invalid type");
 			hasError = true;
 			return;
@@ -46,7 +46,7 @@ abstract class OrderHandlers extends CommandHandler {
 
 		symb = sc.findSymbol(instrStr);
 		if (symb == null && !user.isAdmin()) {
-			response.setStatus(200);
+			// response.setStatus(200);
 			out.println("Invalid symbol id");
 			hasError = true;
 			return;
@@ -55,53 +55,9 @@ abstract class OrderHandlers extends CommandHandler {
 		price = Integer.parseInt(priceStr);
 		quantity = Integer.parseInt(qntStr);
 
-		response.setStatus(200);
+		// response.setStatus(200);
 		hasError = !exchange(out) || hasError;
 	}
 
 	public abstract Boolean exchange(PrintWriter out) throws IOException;
-}
-
-@WebServlet("/sell-controll")
-class OrderSellHandler extends OrderHandlers {
-	public Boolean exchange(PrintWriter out) throws IOException{
-		if (symb == null && user.isAdmin()) {
-			symb = StocksCore.getInstance().addSymbol(instrStr);
-		}
-		
-		if (!user.hasEnoughShare(symb, quantity)) {
-			out.println("Not enough share");
-			return false;
-		}
-
-		Order curr = StocksCore.getInstance().getOrderNewInstance(type.toString());
-		curr.init(user, symb, price, quantity, type, OrderCommand.SELL);
-		
-		user.addOrder(curr);
-		curr.Exchange(out);
-
-		return true;
-	}
-}
-
-@WebServlet("/buy-controll")
-class OrderBuyHandler extends OrderHandlers {
-	public Boolean exchange(PrintWriter out) throws IOException{
-		if (symb == null && user.isAdmin()) {
-			symb = StocksCore.getInstance().addSymbol(instrStr);
-		}
-		
-		if (!user.withdraw(price)) {
-			out.println("Not enough money");
-			return false;
-		}
-
-		Order curr = StocksCore.getInstance().getOrderNewInstance(type.toString());
-		curr.init(user, symb, price, quantity, type, OrderCommand.BUY);
-
-		user.addOrder(curr);
-		curr.Exchange(out);
-
-		return true;
-	}
 }

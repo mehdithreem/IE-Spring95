@@ -10,7 +10,11 @@ public abstract class CommandHandler extends HttpServlet {
 		StringWriter sw = new StringWriter();
 		Boolean hasError = false;
 
+		System.out.println("sdfadfdsafa");
+
 		execute(new PrintWriter(sw, true), request, response, hasError);
+
+		System.out.println("23131");
 
 		if (hasError) {
 			request.setAttribute("errorMessage", sw.toString());

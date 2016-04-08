@@ -1,20 +1,22 @@
-<div class="header">
-	<h2>
-		سامانه مدیریت بورس
-	</h2>
-</div>
-<div class="links">
-	<a class="button" href="index.html">
-		خانه
-	</a>
-	<div class="nav">
-		<a class="button" href="buy_form.html">
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<div class="nav">
+	<div class="header">
+		<h2>
+			سامانه مدیریت بورس
+		</h2>
+	</div>
+	<div class="links">
+		<a class="button" href="symbols">
+			اطلاعات نمادها
+		</a>
+		<a class="button" href="buy.jsp">
 			خرید سهم
 		</a>
-		<a class="button" href="sell_form.html">
+		<a class="button" href="sell.jsp">
 			فروش سهم
 		</a>
-		<a class="button" href="">
+		<a class="button" href="add_new_usr.jsp">
 			ساخت اکانت
 		</a>
 	</div>

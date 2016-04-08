@@ -6,7 +6,7 @@
 
 @font-face{
 	font-family: DroidNaskh;
-	src: url('stuff/DroidNaskh-Bold.ttf');
+	src: url('../stuff/DroidNaskh-Bold.ttf');
 	font-weight: bold;
 }
 

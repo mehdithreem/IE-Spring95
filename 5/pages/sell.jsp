@@ -1,3 +1,5 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 
 <html>
@@ -15,9 +17,9 @@
 
 		<jsp:include page="nav.jsp" />
 		<jsp:include page="sell_buy_content.jsp">
-			<jsp:param name="headerVar" value="${فروش سهام}"/>
-			<jsp:param  name="submitVar" value="${فروش}"/>
-			<jsp:param  name="action" value="${sell-controll}"/>
+			<jsp:param name="headerVar" value="فروش سهام"/>
+			<jsp:param  name="submitVar" value="فروش"/>
+			<jsp:param  name="action" value="sell-controll"/>
 		</jsp:include>
 	</div>
 <jsp:include page="footer.jsp" />

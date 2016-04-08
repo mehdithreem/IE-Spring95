@@ -1,8 +1,10 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 
 <html>
 <head>
-	<title>Buy Form</title>
+	<title>New User</title>
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -16,7 +18,7 @@
 		<jsp:include page="nav.jsp" />
 		<div class=main>
 			<jsp:include page="header.jsp">
-				<jsp:param name="headerVar" value="${ساخت اکانت}" />
+				<jsp:param name="headerVar" value="ساخت اکانت" />
 			</jsp:include>
 			<div class="content">
 				<form class="form-horizontal my-form" action="add-user" method="POST">
