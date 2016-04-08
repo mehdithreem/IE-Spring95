@@ -31,6 +31,10 @@ class User {
 		return ID;
 	}
 
+	public Integer getCredit() {
+		return credit;
+	}
+
 	public void deposit(Integer amount) {
 		credit = credit + amount;
 	}

@@ -1,5 +1,7 @@
 import java.io.*;
 import java.util.*;
+import java.io.FileWriter;
+import java.io.IOException;
 
 enum OrderStatus {
 	QUEUED,
@@ -22,13 +24,15 @@ public abstract class Order {
 	private OrderType type;
 	private OrderStatus status;
 	private OrderCommand command;
+	private FileWriter writer;
 
 	public void init(User _owner
 			,Symbol _instrument
 			,Integer _price
 			,Integer _quantity
 			,OrderType _type
-			,OrderCommand _command) {
+			,OrderCommand _command
+			,FileWriter _writer) {
 		owner = _owner;
 		instrument = _instrument;
 		originalPrice = _price;
@@ -37,6 +41,7 @@ public abstract class Order {
 		quantity = _quantity;
 		type = _type;
 		command = _command;
+		writer = _writer;
 		status = OrderStatus.QUEUED;
 	}
 
@@ -86,14 +91,14 @@ public abstract class Order {
 			return retCode;
 		}
 		if (quantity.equals(forSell.quantity)) {
-			printSoldMessage(out, forSell.owner.getID(), quantity, instrument.getID(), price, owner.getID());
 
 			forSell.price = price;
 			accept();
 			forSell.accept();
 			retCode = 0;
+			printSoldMessage(out, forSell.owner, quantity, instrument.getID(), price, owner);
+
 		} else if (quantity > forSell.quantity) {
-			printSoldMessage(out, forSell.owner.getID(), forSell.quantity, instrument.getID(), price, owner.getID());
 
 			owner.addShare(instrument, forSell.quantity);
 			quantity -= forSell.quantity;
@@ -101,8 +106,9 @@ public abstract class Order {
 			forSell.price = price;
 			forSell.accept();
 			retCode = 1;
+			printSoldMessage(out, forSell.owner, forSell.quantity, instrument.getID(), price, owner);
+
 		} else if (quantity < forSell.quantity) {
-			printSoldMessage(out, forSell.owner.getID(), quantity, instrument.getID(), price, owner.getID());
 
 			forSell.owner.deposit(quantity*price);
 			forSell.owner.decShare(instrument, quantity);
@@ -110,12 +116,15 @@ public abstract class Order {
 
 			accept();
 			retCode = 2;
+			printSoldMessage(out, forSell.owner, quantity, instrument.getID(), price, owner);
 		}
 
 		return retCode;
 	}
 
-	private void printSoldMessage(PrintWriter out, Integer sellerID, Integer quantity, String symb, Integer price, Integer buyerID) {
+	private void printSoldMessage(PrintWriter out, User seller, Integer quantity, String symb, Integer price, User buyer) {
+		Integer sellerID = seller.getID();
+		Integer buyerID = buyer.getID();
 		out.println( String.valueOf(sellerID) 
 			+ " sold " + String.valueOf(quantity) 
 			+ " shares of " + symb 
@@ -126,6 +135,20 @@ public abstract class Order {
 			+ " shares of " + symb 
 			+ " @" + String.valueOf(price)
 			+ " to " + String.valueOf(buyerID));
+		 writer.append(buyerID);
+		 writer.append(",");
+		 writer.append(sellerID);
+		 writer.append(",");
+		 writer.append(symb);
+		 writer.append(",");
+		 writer.append(type.toString());
+		 writer.append(",");
+		 writer.append(String.valueOf(quantity));
+		 writer.append(",");
+		 writer.append(String.valueOf(buyer.getCredit()));
+		 writer.append(",");
+		 writer.append(String.valueOf(seller.getCredit()));
+		 writer.append('\n');
 	}
 
 	public abstract void Exchange(PrintWriter out);
