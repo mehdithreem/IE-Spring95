@@ -15,7 +15,7 @@ abstract class OrderHandlers extends CommandHandler {
 		StocksCore sc = StocksCore.getInstance();
 
 		String idStr = request.getParameter("id");
-		String instrStr = request.getParameter("instrument");
+		instrStr = request.getParameter("instrument");
 		String typeStr = request.getParameter("type");
 		String priceStr = request.getParameter("price");
 		String qntStr = request.getParameter("quantity");

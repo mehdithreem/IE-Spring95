@@ -19,7 +19,7 @@
 		<a class="button" href="add_new_usr.jsp">
 			ساخت اکانت
 		</a>
-		<a class="button" href="get-backup">
+		<a class="button" href="backup">
 			دانلود بک‌آپ
 		</a>
 	</div>

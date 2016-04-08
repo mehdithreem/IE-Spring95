@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 import com.sun.net.httpserver.*;
 
-class User {
+public class User {
 	protected Integer ID;
 	protected String name;
 	protected String lastName;
@@ -28,6 +28,10 @@ class User {
 	}
 
 	public Integer getID() {
+		return ID;
+	}
+
+	public Integer getId() {
 		return ID;
 	}
 

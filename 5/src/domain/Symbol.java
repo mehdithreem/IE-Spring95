@@ -1,18 +1,26 @@
 import java.util.*;
 import java.io.*;
 
-class Symbol {
-	private String ID;
+public class Symbol {
+	private String id;
 
 	private Queue<Order> sellQueue;
 	private Queue<Order> buyQueue;
 
+	public String getId() {
+		return id;
+	}
+
 	public String getID() {
-		return ID;
+		return id;
+	}
+
+	public String getName() {
+		return "kooft";
 	}
 
 	public Symbol(String _id) {
-		ID = _id;
+		id = _id;
 
 		sellQueue = new PriorityQueue<Order>(new Comparator<Order>() {
 			@Override

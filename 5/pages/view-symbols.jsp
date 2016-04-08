@@ -29,13 +29,13 @@
 	<div class="content">
 		<c:forEach var="symb" items="${symbols}">
 			<div class="symb-box">
-				<div class="symb-name">${symb.ID}</div>
+				<div class="symb-name"><c:out value="${symb.id}"/></div>
 				<div class="symb-qbox">
 					<div class="symb-q">
 						<p>صف خرید</p>
-						<c:forEach var="qitem" items="${symb.buys}" end="5">
+						<c:forEach var="qitem" items="${symb.buys}" end="4">
 							<ul>
-								<li>${qitem.owner.ID}</li>
+								<li>${qitem.owner.id}</li>
 								<li>${qitem.quantity}</li>
 								<li>$${qitem.price}</li>
 							</ul>
@@ -45,9 +45,9 @@
 				<div class="symb-qbox">
 					<div class="symb-q">
 						<p>صف فروش</p>
-						<c:forEach var="qitem" items="${symb.sells}" end="5">
+						<c:forEach var="qitem" items="${symb.sells}" end="4">
 							<ul>
-								<li>${qitem.owner.ID}</li>
+								<li>${qitem.owner.id}</li>
 								<li>${qitem.quantity}</li>
 								<li>$${qitem.price}</li>
 							</ul>
