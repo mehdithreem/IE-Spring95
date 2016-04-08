@@ -16,7 +16,7 @@
 		<jsp:include page="nav.jsp" />
 		<div class=main>
 			<jsp:include page="header.jsp">
-				<jsp:param name="headerVar" value="ساخت اکانت" />
+				<jsp:param name="headerVar" value="${ساخت اکانت}" />
 			</jsp:include>
 			<div class="content">
 				<form class="form-horizontal my-form" action="add-user" method="POST">
