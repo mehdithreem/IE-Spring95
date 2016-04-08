@@ -1,4 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="java.util.*"%>
+<%@page import="java.io.*"%>
+
 
 <!DOCTYPE html>
 
@@ -17,8 +20,9 @@
 
 		<jsp:include page="nav.jsp" />
 		<div class=main>
+			<% String headerStr = "پیغام"; %>
 			<jsp:include page="header.jsp">
-				<jsp:param name="headerVar" value="پیغام" />
+				<jsp:param name="headerVar" value="${headerStr}" />
 			</jsp:include>
 			<div class="content">
 				<h3>${message}</h3>

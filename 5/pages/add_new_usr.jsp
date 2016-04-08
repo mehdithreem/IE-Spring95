@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="java.util.*"%>
+<%@page import="java.io.*"%>
 
 <!DOCTYPE html>
 
@@ -17,8 +19,13 @@
 
 		<jsp:include page="nav.jsp" />
 		<div class=main>
+			<% 
+			response.setCharacterEncoding("UTF-8");
+			StringWriter sw = new StringWriter();
+			new PrintWriter(sw, true).print("پیغام");
+			%>
 			<jsp:include page="header.jsp">
-				<jsp:param name="headerVar" value="ساخت اکانت" />
+				<jsp:param name="headerVar" value="<%=sw.toString()%>" />
 			</jsp:include>
 			<div class="content">
 				<form class="form-horizontal my-form" action="add-user" method="POST">
@@ -31,8 +38,8 @@
 						<input type="text" class="form-control" name="name" id="name" placeholder="نام">
 					</div>
 					<div class="form-group">
-						<label for="id">فمیلی</label>
-						<input type="text" class="form-control" name="family" id="family" placeholder="فمیلی">
+						<label for="id">نام‌خانوادگی</label>
+						<input type="text" class="form-control" name="family" id="family" placeholder="نام‌خانوادگی">
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-default submit-btn">ثبت</button>

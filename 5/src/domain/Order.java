@@ -24,15 +24,13 @@ public abstract class Order {
 	private OrderType type;
 	private OrderStatus status;
 	private OrderCommand command;
-	private FileWriter writer;
 
 	public void init(User _owner
 			,Symbol _instrument
 			,Integer _price
 			,Integer _quantity
 			,OrderType _type
-			,OrderCommand _command
-			,FileWriter _writer) {
+			,OrderCommand _command) {
 		owner = _owner;
 		instrument = _instrument;
 		originalPrice = _price;
@@ -41,7 +39,6 @@ public abstract class Order {
 		quantity = _quantity;
 		type = _type;
 		command = _command;
-		writer = _writer;
 		status = OrderStatus.QUEUED;
 	}
 
@@ -135,20 +132,20 @@ public abstract class Order {
 			+ " shares of " + symb 
 			+ " @" + String.valueOf(price)
 			+ " to " + String.valueOf(buyerID));
-		 writer.append(buyerID);
-		 writer.append(",");
-		 writer.append(sellerID);
-		 writer.append(",");
-		 writer.append(symb);
-		 writer.append(",");
-		 writer.append(type.toString());
-		 writer.append(",");
-		 writer.append(String.valueOf(quantity));
-		 writer.append(",");
-		 writer.append(String.valueOf(buyer.getCredit()));
-		 writer.append(",");
-		 writer.append(String.valueOf(seller.getCredit()));
-		 writer.append('\n');
+		 StocksCore.getInstance().appendToWriter(String.valueOf(buyerID));
+		 StocksCore.getInstance().appendToWriter(",");
+		 StocksCore.getInstance().appendToWriter(String.valueOf(sellerID));
+		 StocksCore.getInstance().appendToWriter(",");
+		 StocksCore.getInstance().appendToWriter(symb);
+		 StocksCore.getInstance().appendToWriter(",");
+		 StocksCore.getInstance().appendToWriter(type.toString());
+		 StocksCore.getInstance().appendToWriter(",");
+		 StocksCore.getInstance().appendToWriter(String.valueOf(quantity));
+		 StocksCore.getInstance().appendToWriter(",");
+		 StocksCore.getInstance().appendToWriter(String.valueOf(buyer.getCredit()));
+		 StocksCore.getInstance().appendToWriter(",");
+		 StocksCore.getInstance().appendToWriter(String.valueOf(seller.getCredit()));
+		 StocksCore.getInstance().appendToWriter("\n");
 	}
 
 	public abstract void Exchange(PrintWriter out);

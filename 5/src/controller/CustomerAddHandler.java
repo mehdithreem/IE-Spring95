@@ -21,7 +21,7 @@ public class CustomerAddHandler extends CommandHandler {
 			hasError = true;
 		}
 		else
-			out.println("New user is added");
+			out.println("کاربر جدید اضافه شد");
 		// response.setStatus(200);
 		return;
 	}

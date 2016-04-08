@@ -5,18 +5,20 @@ public class StocksCore {
 	private Map<Integer, User> users;
 	private Map<String, Symbol> symbols;
 	private Map<String, Class<? extends Order>> exchangeHandlers;
+	private FileWriter csvWriter;
 	
 	private static StocksCore stocksCore = null;
 
-	private StocksCore(){
+	private StocksCore() {
 		users = new HashMap<Integer,User>();
 		symbols = new HashMap<String,Symbol>();
 		exchangeHandlers = new HashMap<String, Class<? extends Order>>();
+		// csvWriter = new FileWriter("backup.csv", true);
 
 		users.put(1, Admin.getInstance());
 	}
 
-	public static StocksCore getInstance(){
+	public static StocksCore getInstance() {
 		if (stocksCore == null) {
 			stocksCore = new StocksCore();
 		}
@@ -27,6 +29,14 @@ public class StocksCore {
 		if (users.putIfAbsent(id,new User(id, name, lastName)) == null)
 			return true;
 		return false;
+	}
+
+	public void appendToWriter(String newStr) {
+		try {
+			csvWriter.write(newStr);
+		} catch (Exception E) {
+			System.out.println("cannot log csv");
+		}
 	}
 
 	public Symbol addSymbol(String id) {

@@ -29,15 +29,27 @@
 	<div class="content">
 		<c:forEach var="symb" items="${symbols}">
 			<div class="symb-box">
-				<div class="symb-name"><c:out value="${symb.getID()}"/></div>
+				<div class="symb-name">${symb.ID}</div>
 				<div class="symb-qbox">
 					<div class="symb-q">
 						<p>صف خرید</p>
-						<c:forEach var="qitem" items="${symb.getBuys()}" end="5">
+						<c:forEach var="qitem" items="${symb.buys}" end="5">
 							<ul>
-								<li><c:out value="${qitem.getOwner().getID()}"/></li>
-								<li><c:out value="${qitem.getQuantity()}"/></li>
-								<li>$<c:out value="${qitem.getPrice()}"/></li>
+								<li>${qitem.owner.ID}</li>
+								<li>${qitem.quantity}</li>
+								<li>$${qitem.price}</li>
+							</ul>
+						</c:forEach>
+					</div>
+				</div>
+				<div class="symb-qbox">
+					<div class="symb-q">
+						<p>صف فروش</p>
+						<c:forEach var="qitem" items="${symb.sells}" end="5">
+							<ul>
+								<li>${qitem.owner.ID}</li>
+								<li>${qitem.quantity}</li>
+								<li>$${qitem.price}</li>
 							</ul>
 						</c:forEach>
 					</div>
