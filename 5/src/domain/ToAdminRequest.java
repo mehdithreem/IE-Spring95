@@ -12,7 +12,19 @@ public class ToAdminRequest {
 		reqID = _reqID;
 	}
 
-	void accept() {
+	public Integer getId() {
+		return id;
+	}
+
+	public Integer getAmount() {
+		return amount;
+	}
+
+	public Integer getReqID() {
+		return reqID;
+	}
+
+	public void accept() {
 		StocksCore sc = StocksCore.getInstance();
 		User user = sc.findUser(id);
 		user.deposit(amount);

@@ -7,20 +7,26 @@
 		</h2>
 	</div>
 	<div class="links">
-		<a class="button" href="symbols">
+		<a class="button" href="/stocks/symbols">
 			اطلاعات نمادها
 		</a>
-		<a class="button" href="buy.jsp">
+		<a class="button" href="/stocks/buy.jsp">
 			خرید سهم
 		</a>
-		<a class="button" href="sell.jsp">
+		<a class="button" href="/stocks/sell.jsp">
 			فروش سهم
 		</a>
-		<a class="button" href="add_new_usr.jsp">
+		<a class="button" href="/stocks/add_new_usr.jsp">
 			ساخت اکانت
 		</a>
-		<a class="button" href="backup">
+		<a class="button" href="/stocks/deposit.jsp">
+			افزایش اعتبار
+		</a>
+		<a class="button" href="/stocks/backup">
 			دانلود بک‌آپ
+		</a>
+		<a class="button" href="/stocks/admin/requests">
+			لیست درخواست‌ها
 		</a>
 	</div>
 </div>

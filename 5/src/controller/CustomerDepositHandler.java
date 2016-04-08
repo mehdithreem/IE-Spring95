@@ -10,12 +10,12 @@ public class CustomerDepositHandler extends CommandHandler {
 		String idStr = request.getParameter("id");
 		String amountStr = request.getParameter("amount");
 		if(idStr==null || amountStr==null) {
-			response.setStatus(404);
+			// response.setStatus(404);
 			out.println("Mismatched parameters");
 			hasError = true;
 			return;
 		}
-		response.setStatus(200);
+		// response.setStatus(200);
 		Integer id = Integer.parseInt(idStr);
 		Integer amount = Integer.parseInt(amountStr);
 		User user = sc.findUser(id);
@@ -29,6 +29,11 @@ public class CustomerDepositHandler extends CommandHandler {
 		}
 		return;
 	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		super.doPost(request, response);
+	}
+
 }
 
 // class CustomerWithdrawHandler extends CommandHandler {

@@ -13,11 +13,8 @@ public class StocksCore {
 		users = new HashMap<Integer,User>();
 		symbols = new HashMap<String,Symbol>();
 		exchangeHandlers = new HashMap<String, Class<? extends Order>>();
-<<<<<<< HEAD
 		csvWriter = new StringWriter();
-=======
-		csvWriter = new FileWriter("backup.csv");
->>>>>>> b00a22dd90fa38ea81a87f6abff6f8f411752173
+		csvWriter.write("Buyer, Seller, instrument, type of trade, quantity, Buyer Remained Money, Seller Current Money\n");
 
 		users.put(1, Admin.getInstance());
 	}
@@ -59,6 +56,10 @@ public class StocksCore {
 
 	public Collection<Symbol> getAllSymbols() {
 		return symbols.values();
+	}
+
+	public Set<String> getExchangeTypes() {
+		return exchangeHandlers.keySet();
 	}
 
 	public void loadExchanges(String serviceRootFolder) {

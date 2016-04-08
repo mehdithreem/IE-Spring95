@@ -1,20 +1,34 @@
-<<!DOCTYPE html>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="java.util.*"%>
+<%@page import="java.io.*"%>
+
+
+<!DOCTYPE html>
+
 <html>
 <head>
-	<title>Error</title>
+	<title>Message</title>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/form.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
-<body>
 
+<body>
 	<div class="container">
-		
-		<jsp:include page="header.jsp">
-			<jsp:param name="headerVar" value="Error" />
-		</jsp:include>
 
 		<jsp:include page="nav.jsp" />
-		
-		<h3><font color="red"><c:out value="${errorMessage}" /></font></h3>
-	
+		<div class=main>
+			<% String headerStr = "خطا"; %>
+			<jsp:include page="header.jsp">
+				<jsp:param name="headerVar" value="${headerStr}" />
+			</jsp:include>
+			<div class="content">
+				<h3>${errorMessage}</h3>
+			</div>
+		</div>
+
 	</div>
 	<jsp:include page="footer.jsp" />
 </body>

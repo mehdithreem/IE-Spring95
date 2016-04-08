@@ -8,7 +8,7 @@
         <%=request.getParameter("headerVar")%>
 	</h1>
 	<div class="fade-box">
-		<img class="logo" id="seo" src="stuff/seologo.png" alt="" />
-		<img class="logo" id="ut" src="stuff/utlogo.png" alt=""/>
+		<img class="logo" id="seo" src="/stocks/stuff/seologo.png" alt="" />
+		<img class="logo" id="ut" src="/stocks/stuff/utlogo.png" alt=""/>
 	</div>
 </div>
