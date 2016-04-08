@@ -20,4 +20,7 @@ public abstract class CommandHandler extends HttpServlet {
 			request.getRequestDispatcher("message.jsp").forward(request, response);
 		}
 	}
+
+	protected abstract void execute(PrintWriter out, HttpServletRequest request,
+	 HttpServletResponse response, Boolean hasError) throws IOException;
 }

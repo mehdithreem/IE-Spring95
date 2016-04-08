@@ -1,17 +1,5 @@
 import java.util.*;
 import java.io.*;
-import java.net.*;
-import com.sun.net.httpserver.*;
-import ir.ramtung.coolserver.*;
-
-class UnknownCommandHandler extends CommandHandler {
-	public void execute(PrintWriter out) throws IOException{
-		setResCode(404);
-		out.println("Unknown Command");
-		return;
-	}
-}
-
 
 public class StocksCore {
 	private Map<Integer, User> users;
@@ -90,24 +78,4 @@ public class StocksCore {
 		}
 		return retOrder;
 	}
-
-	public static void main(String[] args) throws IOException {
-		HttpServer server = HttpServer.create(new InetSocketAddress(9091) , 0);
-		HttpHandler unknownHandler = new UnknownCommandHandler();
-
-		server.createContext("/customer/add" , new CustomerAddHandler());
-		server.createContext("/customer/deposit" , new CustomerDepositHandler());
-		server.createContext("/customer/withdraw" , new CustomerWithdrawHandler());
-		server.createContext("/customer" , unknownHandler);
-
-		server.createContext("/order/sell", new OrderSellHandler());
-		server.createContext("/order/buy", new OrderBuyHandler());
-		server.createContext("/order" , unknownHandler);
-
-		server.createContext("/config/uploadzip", new ConfigHandler());
-
-		server.createContext("/" , unknownHandler);
-		server.start();
-
-  	}
 }
