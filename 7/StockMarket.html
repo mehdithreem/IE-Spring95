@@ -1,0 +1,124 @@
+<<!DOCTYPE html>
+
+<html ng-app="stockMarket">
+<head>
+	<title>Stock Market</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+</head>
+<body ng-controller="StockMarketController as stockMarket" >
+	<section ng-controller="PanelController as panel"> 
+		<ul class="nav nav-pills">
+			<li ng-class="{ active: panel.isSelected(1)}"> 
+				<a href ng-click="panel.selectTab(1)">Home</a> 
+			</li> 
+			<li ng-class="{ active: panel.isSelected(2)}"> 
+				<a href ng-click="panel.selectTab(2)">Market</a> 
+			</li> 
+			<li ng-class="{ active: panel.isSelected(3)}"> 
+				<a href ng-click="panel.selectTab(3)">Symbols</a> 
+			</li>
+	   	</ul>
+	   	<div class="panel" ng-show="panel.isSelected(1)" ng-controller="UserController as user">
+	   		<h4>Home</h4>  
+	   			<p>
+	   				<img ng-src="{{user.info.image.full}}" class="img-circle" alt="Cinque Terre" width="104" height="104"/>
+	   			</p>
+	   			<p>
+	   				<em class="text-primary">{{user.info.name+" "+user.info.lastName}}</em>
+	   			</p>
+	   			<p>
+	   				<em class="text-muted">@{{user.info.ID}}</em>
+	   			</p>
+	   			<p>
+	   				credit :
+	   				{{user.info.credit | currency}}
+	   			</p>
+
+	   			<div class="panel-group">
+					<div class="panel panel-default">
+				    	<div class="panel-heading">Shares</div>
+				    	<div class="panel-body" ng-repeat="share in user.info.shares">
+					  		<table class="table table-hover">
+					  			<thead>
+					  				<th> Symbol </th>
+					  				<th> Quantity </th>	
+					  			</thead>
+					  			<tbody>
+					  				<tr>
+					  					<th> {{share.symbolID}} </th>
+					  					<th> {{share.quantity}} </th>
+					  				</tr>
+					  			</tbody>
+					  		</table>
+				    	</div>
+					</div>
+				</div>
+
+	   			<ul class="list-group" >
+				<li class="list-group-item list-group-item-info" ng-controller="ListController as list">
+				  	<span href ng-click="list.selectTab()" class="badge">{{user.info.orders.length}}</span>Orders
+				  	<div ng-show="list.isSelected()" ng-repeat="order in user.info.orders">
+				  		<table class="table table-hover">
+				  			<tbody>
+				  				<tr>
+				  					<th> {{order.symbolID}} </th>
+				  					<th> {{order.quantity}} </th>
+				  					<th> {{order.price}} </th>
+				  					<th> {{order.type}} </th>
+				  					<th> {{order.buyer}} </th>
+				  					<th> <button type="button" class="btn btn-success" href ng-click="user.acceptOrder(order.symbolID)">accept</button> </th>
+				  					<th> <button type="button" class="btn btn-danger" href ng-click="user.rejectOrder(order.symbolID)">reject</button> </th>
+				  				</tr>
+				  			</tbody>
+				  		</table>
+				  	</div>
+				</li>
+				<li class="list-group-item list-group-item-success" ng-controller="ListController as list2">
+					<span href ng-click="list2.selectTab()" class="badge">{{user.info.acceptOrders.length}}</span> Accepted Orders
+					<div ng-show="list2.isSelected()" ng-repeat="order in user.info.acceptOrders">
+				  		<table class="table table-hover">
+				  			<tbody >
+				  				<tr>
+				  					<th> {{order.symbolID}} </th>
+				  					<th> {{order.quantity}} </th>
+				  					<th> {{order.price}} </th>
+				  					<th> {{order.type}} </th>
+				  					<th> {{order.buyer}} </th>
+				  				</tr>
+				  			</tbody>
+				  		</table>
+				  	</div>
+				</li> 
+				<li class="list-group-item list-group-item-danger" ng-controller="ListController as list3">
+					<span href ng-click="list3.selectTab()" class="badge">{{user.info.rejectOrders.length}}</span> Rejected Orders
+					<div ng-show="list3.isSelected()" ng-repeat="order in user.info.rejectOrders">
+				  		<table class="table table-hover">
+				  			<tbody >
+				  				<tr>
+				  					<th> {{order.symbolID}} </th>
+				  					<th> {{order.quantity}} </th>
+				  					<th> {{order.price}} </th>
+				  					<th> {{order.type}} </th>
+				  					<th> {{order.buyer}} </th>
+				  				</tr>
+				  			</tbody>
+				  		</table>
+				  	</div>
+				</li> 
+				</ul>
+	   	</div>
+ 		<div class="panel" ng-show="panel.isSelected(2)">
+			<h4>Market</h4> 
+			<blockquote>None yet</blockquote> 
+		</div>
+		<div class="panel" ng-show="panel.isSelected(3)">
+			<h4>Symbols</h4> 
+			<blockquote>None yet</blockquote> 
+		</div>
+	</section>
+	<script type="text/javascript" src="angular.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+</body>
+</html>

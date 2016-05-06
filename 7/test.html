@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html ng-app="stockmarket">
+<head>
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+	<title></title>
+</head>
+<body ng-controller="StockmarketController as stockmarket" >
+	<div ng-hide="product.soldOut" ng-repeat="product in stockmarket.products">
+		<h3>
+		{{product.instrument}}
+		<em class="pull-right">{{product.price | currency}}</em>
+		<img ng-src="{{product.image.full}}" />
+		</h3>
+		<button ng-show="product.canPurchase">Buy</button>
+	</div>
+	<script type="text/javascript" src="angular.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+</body>
+</html>
