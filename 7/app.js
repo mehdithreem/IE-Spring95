@@ -17,7 +17,16 @@
 	});
 
 	app.controller('StockMarketController' , function(){
-		this.products = stock;
+		this.products = symbols;
+		this.info = currUser;
+		this.quantity;
+		this.price;
+		this.buy = function(symbol,type){
+			if (this.quantity === 0 || this.price===0 )
+				return;
+			else
+				this.info.orders.push({symbolID:symbol,price:this.price,quantity:this.quantity,type:type});
+		};
 	});
 
 	app.controller('ListController', function(){
@@ -33,6 +42,21 @@
 			return this.tab ===1;
 		};
 	});
+
+	var symbols =[
+		{
+			id:1,
+			type:'GTC',
+		},
+		{
+			id:2,
+			type:'MPO',
+		},
+		{
+			id:3,
+			type:'IOC',
+		},
+	];
 
 	var stock =[
 		{
@@ -104,31 +128,9 @@
 				symbolID:456,
 				price:100,
 				quantity:3,
-				buyer:'daE',
 				type:'type',
 			}
 		],
-
-		acceptOrders:[
-			{
-				symbolID:456,
-				price:100,
-				quantity:1,
-				buyer:'mamad',
-				type:'type',
-			}
-		],
-
-		rejectOrders:[
-			{
-				symbolID:456,
-				price:100,
-				quantity:2,
-				owner:'nader',
-				type:'type',
-			}
-		],
-
 		image:{
 			full:'1.jpg',
 			thumb:'1.jpg'

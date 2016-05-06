@@ -1,13 +1,17 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 
-<html ng-app="stockMarket">
+<html ng-app="stockMarket" style="background-image: url('2.jpg');" >
+
 <head>
 	<title>Stock Market</title>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="background.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
-<body ng-controller="StockMarketController as stockMarket" >
+<body>
 	<section ng-controller="PanelController as panel"> 
 		<ul class="nav nav-pills">
 			<li ng-class="{ active: panel.isSelected(1)}"> 
@@ -21,7 +25,7 @@
 			</li>
 	   	</ul>
 	   	<div class="panel" ng-show="panel.isSelected(1)" ng-controller="UserController as user">
-	   		<h4>Home</h4>  
+	   		<font color="AliceBlue" size="6">Home</font>  
 	   			<p>
 	   				<img ng-src="{{user.info.image.full}}" class="img-circle" alt="Cinque Terre" width="104" height="104"/>
 	   			</p>
@@ -36,88 +40,81 @@
 	   				{{user.info.credit | currency}}
 	   			</p>
 
-	   			<div class="panel-group">
-					<div class="panel panel-default">
-				    	<div class="panel-heading">Shares</div>
-				    	<div class="panel-body" ng-repeat="share in user.info.shares">
-					  		<table class="table table-hover">
-					  			<thead>
-					  				<th> Symbol </th>
-					  				<th> Quantity </th>	
-					  			</thead>
-					  			<tbody>
-					  				<tr>
-					  					<th> {{share.symbolID}} </th>
-					  					<th> {{share.quantity}} </th>
-					  				</tr>
-					  			</tbody>
-					  		</table>
-				    	</div>
-					</div>
+				<div class="panel panel-primary">
+			    	<div class="panel-heading" >Shares</div>
+			    	<div class="panel-body" ng-repeat="share in user.info.shares">
+				  		<table class="table table-bordered">
+				  			<thead>
+				  				<tr class="info">
+					  				<th>Symbol </th>
+					  				<th>Quantity</th>
+				  				</tr>
+				  			</thead>
+				  			<tbody>
+				  				<tr class="info">
+				  					<td> {{share.symbolID}} </td>
+				  					<td> {{share.quantity}} </td>
+				  				</tr>
+				  			</tbody>
+				  		</table>
+			    	</div>
 				</div>
 
 	   			<ul class="list-group" >
 				<li class="list-group-item list-group-item-info" ng-controller="ListController as list">
 				  	<span href ng-click="list.selectTab()" class="badge">{{user.info.orders.length}}</span>Orders
-				  	<div ng-show="list.isSelected()" ng-repeat="order in user.info.orders">
-				  		<table class="table table-hover">
+				  	<div ng-show="list.isSelected()">
+				  		<table class="table table-bordered">
+				  			<thead>
+				  				<td> Symbol </td>
+			  					<td> Quantity </td>
+			  					<td> Price </td>
+			  					<td> Type </td>
+				  			</thead>
 				  			<tbody>
-				  				<tr>
-				  					<th> {{order.symbolID}} </th>
-				  					<th> {{order.quantity}} </th>
-				  					<th> {{order.price}} </th>
-				  					<th> {{order.type}} </th>
-				  					<th> {{order.buyer}} </th>
-				  					<th> <button type="button" class="btn btn-success" href ng-click="user.acceptOrder(order.symbolID)">accept</button> </th>
-				  					<th> <button type="button" class="btn btn-danger" href ng-click="user.rejectOrder(order.symbolID)">reject</button> </th>
+				  				<tr class="info" ng-repeat="order in user.info.orders">
+				  					<td> {{order.symbolID}} </td>
+				  					<td> {{order.quantity}} </td>
+				  					<td> {{order.price}} </td>
+				  					<td> {{order.type}} </td>
 				  				</tr>
 				  			</tbody>
 				  		</table>
 				  	</div>
 				</li>
-				<li class="list-group-item list-group-item-success" ng-controller="ListController as list2">
-					<span href ng-click="list2.selectTab()" class="badge">{{user.info.acceptOrders.length}}</span> Accepted Orders
-					<div ng-show="list2.isSelected()" ng-repeat="order in user.info.acceptOrders">
-				  		<table class="table table-hover">
-				  			<tbody >
-				  				<tr>
-				  					<th> {{order.symbolID}} </th>
-				  					<th> {{order.quantity}} </th>
-				  					<th> {{order.price}} </th>
-				  					<th> {{order.type}} </th>
-				  					<th> {{order.buyer}} </th>
-				  				</tr>
-				  			</tbody>
-				  		</table>
-				  	</div>
-				</li> 
-				<li class="list-group-item list-group-item-danger" ng-controller="ListController as list3">
-					<span href ng-click="list3.selectTab()" class="badge">{{user.info.rejectOrders.length}}</span> Rejected Orders
-					<div ng-show="list3.isSelected()" ng-repeat="order in user.info.rejectOrders">
-				  		<table class="table table-hover">
-				  			<tbody >
-				  				<tr>
-				  					<th> {{order.symbolID}} </th>
-				  					<th> {{order.quantity}} </th>
-				  					<th> {{order.price}} </th>
-				  					<th> {{order.type}} </th>
-				  					<th> {{order.buyer}} </th>
-				  				</tr>
-				  			</tbody>
-				  		</table>
-				  	</div>
-				</li> 
 				</ul>
 	   	</div>
  		<div class="panel" ng-show="panel.isSelected(2)">
-			<h4>Market</h4> 
+			<font color="AliceBlue" size="6">Market</font>
 			<blockquote>None yet</blockquote> 
 		</div>
-		<div class="panel" ng-show="panel.isSelected(3)">
-			<h4>Symbols</h4> 
-			<blockquote>None yet</blockquote> 
+		<div class="panel" ng-show="panel.isSelected(3)" ng-controller="StockMarketController as sm">
+			<font color="AliceBlue" size="6">Symbols</font> 
+			<div ng-repeat=" symbol in sm.products ">
+				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"> {{symbol.type}}	{{symbol.id}}</button>
+
+			  <!-- Modal -->
+				<div class="modal fade" id="myModal" role="dialog">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" href ng-click="sm.buy(symbol.id,symbol.type)" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">{{symbol.type}}	{{symbol.id}}</h4>
+							</div>
+							<div class="modal-body">
+								<input type="number" class="form-control" ng-model="sm.quantity" placeholder="Enter quantity">
+								<input type="currency" class="form-control" ng-model="sm.price" placeholder="Enter price">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-info" href ng-click="sm.buy(symbol.id,symbol.type)" data-dismiss="modal">buy</button>
+			        		</div>
+			      		</div>
+			    	</div>
+			  	</div>	
+			</div>
 		</div>
 	</section>
+	<script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript" src="angular.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>
 </body>
