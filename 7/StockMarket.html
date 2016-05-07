@@ -11,7 +11,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body ng-controller="StockMarketController as sm">
 	<section ng-controller="PanelController as panel"> 
 		<ul class="nav nav-pills">
 			<li ng-class="{ active: panel.isSelected(1)}"> 
@@ -86,12 +86,30 @@
 	   	</div>
  		<div class="panel" ng-show="panel.isSelected(2)">
 			<font color="AliceBlue" size="6">Market</font>
-			<blockquote>None yet</blockquote> 
+			<div ng-repeat="symbol in sm.market">
+				<table class="table table-bordered">
+		  			<thead>
+		  				<tr class="info">
+			  				<th>{{symbol.id}}</th>
+		  				</tr>
+		  			</thead>
+		  			<tbody>
+		  				<tr class="success" ng-repeat="sell in symbol.sellQueue">
+		  					<td> {{sell.quantity}} </td>
+		  					<td> {{sell.price}} </td>
+		  				</tr>
+		  				<tr class="danger" ng-repeat="buy in symbol.buyQueue">
+		  					<td> {{buy.quantity}} </td>
+		  					<td> {{buy.price}} </td>
+		  				</tr>
+		  			</tbody>
+		  		</table>
+			</div>
 		</div>
-		<div class="panel" ng-show="panel.isSelected(3)" ng-controller="StockMarketController as sm">
+		<div class="panel" ng-show="panel.isSelected(3)" >
 			<font color="AliceBlue" size="6">Symbols</font> 
 			<div ng-repeat=" symbol in sm.products ">
-				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"> {{symbol.type}}	{{symbol.id}}</button>
+				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"> {{symbol.id}}</button>
 
 			  <!-- Modal -->
 				<div class="modal fade" id="myModal" role="dialog">

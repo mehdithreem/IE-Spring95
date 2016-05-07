@@ -22,11 +22,17 @@
 		this.quantity;
 		this.price;
 		this.buy = function(symbol,type){
-			if (this.quantity === 0 || this.price===0 )
+			if (this.quantity === 0 || this.price===0 || this.quantity===null || this.price===null )
 				return;
-			else
-				this.info.orders.push({symbolID:symbol,price:this.price,quantity:this.quantity,type:type});
+			this.info.orders.push({symbolID:symbol,price:this.price,quantity:this.quantity,type:type});
+			
+			for(var i = this.market.length - 1; i >= 0; i--) {
+			    if(this.market[i].id === symbol) {
+			    	this.market[i].sellQueue.push({price:this.price,quantity:this.quantity});
+			    }
+			}		
 		};
+		this.market = shares;
 	});
 
 	app.controller('ListController', function(){
@@ -45,47 +51,34 @@
 
 	var symbols =[
 		{
-			id:1,
+			id:'RENA',
 			type:'GTC',
 		},
 		{
-			id:2,
+			id:'DD',
 			type:'MPO',
 		},
 		{
-			id:3,
+			id:'Oo',
 			type:'IOC',
 		},
 	];
 
-	var stock =[
+	var shares =[
 		{
-			instrument:'instrument',
-			price: 2,
-			quantity: 5,
-			type: 'type',
-			canPurchase: true,
-			soldOut: false,
-			image:{
-				full:'1.jpg',
-				thumb:'1.jpg'
-			},
-		},
-		{
-			instrument:'instrument1',
-			price: 2,
-			quantity: 5,
-			type: 'type',
-			canPurchase: false,
-			soldOut: false,
-		},
-		{
-			instrument:'instrument2',
-			price: 2,
-			quantity: 5,
-			type: 'type',
-			canPurchase: true,
-			soldOut: true,
+			id:'RENA',
+			sellQueue:[
+				{
+					price:100,
+					quantity: 4,
+				},
+			],
+			buyQueue:[
+				{
+					price:200,
+					quantity: 14,
+				},
+			],
 		},
 	];
 
