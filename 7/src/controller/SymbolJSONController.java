@@ -35,7 +35,7 @@ public class SymbolJSONController extends HttpServlet {
 					+String.valueOf(ord.getOwner().getID())+","
 					+String.valueOf(ord.getQuantity())+","
 					+String.valueOf(ord.getPrice())+"]");
-				if ((count == target.getSells().size()-1) || count== 4) break;
+				if ((count == target.getBuys().size()-1) || count== 4) break;
 				else response.getWriter().write(",");
 				count++;
 			}

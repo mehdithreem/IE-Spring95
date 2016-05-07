@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 
-<html ng-app="stockMarket" style="background-image: url('./stuff/2.jpg');" >
+<html ng-app="stockMarket" >
 
 <head>
 	<title>Stock Market</title>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="./css/background.css" />
 </head>
+
 <body ng-controller="StockMarketController as sm">
 	<section ng-controller="PanelController as panel"> 
 		<ul class="nav nav-pills">
@@ -26,7 +26,6 @@
 			</li>
 	   	</ul>
 
-	   	<!-- Modal -->
 		<div class="modal fade" id="LoginModal" role="dialog">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -34,45 +33,39 @@
 						<h4 class="modal-title">Change User</h4>
 					</div>
 					<div class="modal-body">
-						<input type="number" class="form-control" ng-model="sm.newUserID" placeholder="Enter User ID">
+						<input type="number" class="form-control" ng-model="newUserID" placeholder="Enter User ID">
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-info" href ng-click="sm.loginUser()" data-dismiss="modal">Login</button>
+						<button type="button" class="btn btn-info" href ng-click="sm.loginUser(newUserID)" data-dismiss="modal">Login</button>
 					</div>
 				</div>
 			</div>
 		</div>
 
-	   	<div class="panel" ng-show="panel.isSelected(1)" ng-controller="UserController as user">
-	   		<font color="AliceBlue" size="6">Home</font>  
-	   			<p>
-	   				<img ng-src="{{user.info.image.full}}" class="img-circle" alt="Cinque Terre" width="104" height="104"/>
-	   			</p>
-	   			<p>
-	   				<em class="text-primary">{{user.info.name+" "+user.info.lastName}}</em>
-	   			</p>
-	   			<p>
-	   				<em class="text-muted">@{{sm.newUserID}}</em>
-	   			</p>
-	   			<p>
+	   	<div class="panel" ng-show="panel.isSelected(1)">
+	   		<h1>Home</h1>
+	   			<h2>User ID:
+	   				<em class="text-muted">@{{sm.activeUser}}</em>
+	   			</h2>
+	   			<h3>
 	   				credit :
-	   				{{user.info.credit | currency}}
-	   			</p>
+	   				{{sm.info[2] | currency}}
+	   			</h3>
 
 				<div class="panel panel-primary">
 			    	<div class="panel-heading" >Shares</div>
-			    	<div class="panel-body" ng-repeat="share in user.info.shares">
+			    	<div class="panel-body" ng-repeat="share in sm.info[0]">
 				  		<table class="table table-bordered">
 				  			<thead>
 				  				<tr class="info">
-					  				<th>Symbol </th>
+					  				<th>Symbol</th>
 					  				<th>Quantity</th>
 				  				</tr>
 				  			</thead>
 				  			<tbody>
 				  				<tr class="info">
-				  					<td> {{share.symbolID}} </td>
-				  					<td> {{share.quantity}} </td>
+				  					<td> {{share.Symbol}} </td>
+				  					<td> {{share.Quantity}} </td>
 				  				</tr>
 				  			</tbody>
 				  		</table>
@@ -81,7 +74,7 @@
 
 	   			<ul class="list-group" >
 				<li class="list-group-item list-group-item-info" ng-controller="ListController as list">
-				  	<span href ng-click="list.selectTab()" class="badge">{{user.info.orders.length}}</span>Orders
+				  	<span href ng-click="list.selectTab()" class="badge">{{sm.info[1].length}}</span>Orders
 				  	<div ng-show="list.isSelected()">
 				  		<table class="table table-bordered">
 				  			<thead>
@@ -91,11 +84,11 @@
 			  					<td> Type </td>
 				  			</thead>
 				  			<tbody>
-				  				<tr class="info" ng-repeat="order in user.info.orders">
-				  					<td> {{order.symbolID}} </td>
-				  					<td> {{order.quantity}} </td>
-				  					<td> {{order.price}} </td>
-				  					<td> {{order.type}} </td>
+				  				<tr class="info" ng-repeat="order in sm.info[1]">
+				  					<td> {{order.Symbol}} </td>
+				  					<td> {{order.Quantity}} </td>
+				  					<td> {{order.Price}} </td>
+				  					<td> {{order.BS}} </td>
 				  				</tr>
 				  			</tbody>
 				  		</table>
@@ -104,7 +97,8 @@
 				</ul>
 	   	</div>
  		<div class="panel" ng-show="panel.isSelected(2)">
-			<font color="AliceBlue" size="6">Market</font>
+			<h1>Market</h1>
+			<button type="button" class="btn btn-info" href ng-click="sm.refreshtMarket()">Update</button>
 			<div ng-repeat="symbol in sm.market">
 				<table class="table table-bordered">
 		  			<thead>
@@ -128,24 +122,26 @@
 			</div>
 		</div>
 		<div class="panel" ng-show="panel.isSelected(3)" >
-			<font color="AliceBlue" size="6">Symbols</font> 
-			<div ng-repeat=" symbol in sm.products ">
-				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"> {{symbol.id}}</button>
+			<H1>Symbols</H1>
+			<div ng-repeat=" symbol in sm.market | orderBy:'-NAME'">
+				<button type="button" class="btn btn-info btn-lg" ng-click="sm.clearMarketTimer()" data-toggle="modal" data-target="#{{symbol.NAME+'Modal'}}"> {{symbol.NAME}}</button>
 
 			  <!-- Modal -->
-				<div class="modal fade" id="myModal" role="dialog">
+				<div class="buysymboldialog modal fade" id="{{symbol.NAME+'Modal'}}" role="dialog">
 					<div class="modal-dialog modal-lg">
 						<div class="modal-content">
 							<div class="modal-header">
-								<button type="button" class="close" href ng-click="sm.buy(symbol.id,symbol.type)" data-dismiss="modal">&times;</button>
-									<h4 class="modal-title">{{symbol.type}}	{{symbol.id}}</h4>
+								<button type="button" class="close" href ng-click="sm.initMarketTimer()" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">{{symbol.NAME}}</h4>
 							</div>
 							<div class="modal-body">
-								<input type="number" class="form-control" ng-model="sm.quantity" placeholder="Enter quantity">
-								<input type="currency" class="form-control" ng-model="sm.price" placeholder="Enter price">
+								<input type="number" class="form-control" ng-model="quantity" placeholder="Enter quantity">
+								<input type="currency" class="form-control" ng-model="price" placeholder="Enter price">
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-info" href ng-click="sm.buy(symbol.id,symbol.type)" data-dismiss="modal">buy</button>
+								<button type="button" class="btn btn-info" href ng-click="sm.sellOrBuy('send-buy',symbol.NAME,quantity,price);">GTC BUY</button>
+								<button type="button" class="btn btn-info" href ng-click="sm.sellOrBuy('send-sell',symbol.NAME,quantity,price);">GTC SELL</button>
+								<h3>{{sm.message}}</h3>
 			        		</div>
 			      		</div>
 			    	</div>

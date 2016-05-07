@@ -1,9 +1,7 @@
 (function(){
 	var app = angular.module('stockMarket',[]);
-	var activeUserID;
 
 	app.controller('PanelController', function(){
-		
 		this.tab=1;
 		
 		this.selectTab = function(setTab){
@@ -11,38 +9,73 @@
 		};
 
 		this.isSelected = function(checkTab){
-			return this.tab ===checkTab
+			return this.tab === checkTab
 		};
 	});
 
 	app.controller('StockMarketController' , [ '$http', function($http){
-		this.newUserID;
-		this.products = symbols;
-		this.info = info;
-		this.quantity;
-		this.price;
+		this.activeUser = 1;
 
 		var that = this;
-		this.buy = function(symbol,type){
-			if (that.quantity === 0 || that.price===0 || that.quantity===null || that.price===null )
+		this.sellOrBuy = function(address,symbol,quan,value){
+			console.log(symbol+quan+value);
+			if (quan === 0 || value===0 || quan===null || value===null)
 				return;
-			that.info.orders.push({symbolID:symbol,price:that.price,quantity:that.quantity,type:type});
 			
-			for(var i = that.market.length - 1; i >= 0; i--) {
-			    if(that.market[i].id === symbol) {
-			    	that.market[i].sellQueue.push({price:that.price,quantity:that.quantity});
-			    }
-			}		
+			$http.get(address, 
+				{params:{id : that.activeUser, instrument : symbol, type : "GTC", price : value, quantity : quan}}
+				).then(function(response) {
+				console.log(response.data);
+				if (response.status === 203) {
+					that.message = response.data;
+				} else {
+					that.message = response.data;
+					setTimeout(function(argument) {
+						angular.element(".buysymboldialog").modal("hide");
+						that.message = "";
+						that.initMarketTimer();
+					}, 2000);
+				}
+			});
 		};
 
+
 		this.loginUser = function(argument) {
-			activeUserID = that.newUserID;
+			that.activeUser = argument;
+			that.updateUser();
 		}
 
-		$http.get('symbols.json').success(function(data) {
-			console.log(data);
-			that.market = data;
-		});
+		this.updateUser = function () {
+			$http.get('user.json', {params: {id : that.activeUser}}).then(function(response) {
+				console.log(response.data);
+				if (response.status === 203) {
+					that.activeUser = "UserNotFound";
+					that.info = undefined;
+				} else {
+					that.info = response.data;
+				}
+			});
+		};
+
+		this.refreshtMarket = function () {
+			$http.get('symbols.json').success(function(data) {
+				console.log(data);
+				that.market = data;
+			});
+		};
+
+		this.initMarketTimer =  function(argument) {
+			that.marketTimer = setInterval(this.refreshtMarket, 1000*15);
+		}
+
+		this.clearMarketTimer =  function(argument) {
+			clearInterval(that.marketTimer);
+		}
+
+		this.refreshtMarket();
+		this.updateUser();
+		this.initMarketTimer();
+		setInterval(this.updateUser, 1000*5);
 	}]);
 
 	app.controller('ListController', function(){
@@ -58,67 +91,4 @@
 			return this.tab ===1;
 		};
 	});
-
-	var symbols =[
-		{
-			id:'RENA',
-			type:'GTC',
-		},
-		{
-			id:'DD',
-			type:'MPO',
-		},
-		{
-			id:'Oo',
-			type:'IOC',
-		},
-	];
-
-	var shares =[
-		{
-			id:'RENA',
-			sellQueue:[
-				{
-					price:100,
-					quantity: 4,
-				},
-			],
-			buyQueue:[
-				{
-					price:200,
-					quantity: 14,
-				},
-			],
-		},
-	];
-
-	app.controller('UserController', function(){
-		this.info = info;
-	});
-
-	var info = {
-		ID: 12345,
-		name: 'ame',
-		lastName: 'ghezi',
-		credit: 500,
-		shares:[
-			{
-				symbolID:123,
-				quantity:5,
-			}
-		], 
-		orders:[
-			{
-				symbolID:456,
-				price:100,
-				quantity:3,
-				type:'type',
-			}
-		],
-		image:{
-			full:'./stuff/1.jpg',
-			thumb:'./stuff/1.jpg'
-		},
-	}
-	
 } )();

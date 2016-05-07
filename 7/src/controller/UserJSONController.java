@@ -9,32 +9,40 @@ public class UserJSONController extends HttpServlet {
 		response.setContentType("text/json");
 		
 		String idStr = request.getParameter("id");
-		User user = StocksCore.getInstance().findUser(Integer.valuOf(idStr));
+		System.out.println("----------"+idStr);
+		User user = StocksCore.getInstance().findUser(Integer.valueOf(idStr));
+
+		if (user == null) {
+			response.setContentType("text/plain");
+			response.setStatus(203);
+			response.getWriter().write("User not found.");
+			return;
+		}
 		response.getWriter().write(" [ ");
 
 		Collection<Share> shares = user.getShares().values();
 		Integer remaining = shares.size();
 		response.getWriter().write(" [ ");
 		for(Share target : shares) {
-			remaining--;
-			response.getWriter().write("{\"Symbol\":" + target.getSymbol().getId() 
-										+ ",\"Quantity\":"+target.getQuantity()+"}");
+			response.getWriter().write("{\"Symbol\":\"" + target.getSymbol().getId() 
+										+ "\",\"Quantity\":"+target.getQuantity()+"}");
 			if(remaining!=1)
 				response.getWriter().write(" , ");
+			remaining--;
 		}
-		response.getWriter().write("]");
+		response.getWriter().write("],");
 
-		List<Order> orders = user.getOreders();
+		List<Order> orders = user.getOrders();
 		remaining = orders.size();
 		response.getWriter().write(" [ ");
 		for(Order target : orders ) {
-			remaining--;
-			response.getWriter().write("{\"Symbol\":" + target.getInstrument().getId() 
-										+ ",\"Quantity\":"+target.getQuantity()+
-										+ ",\"Price\":"+target.getPrice()+
-										+ ",\"Buy,Sell\":"+target.getCommand().toString()+"}");
+			response.getWriter().write("{\"Symbol\":\"" + target.getInstrument().getId() 
+										+ "\",\"Quantity\":"+target.getQuantity()
+										+ ",\"Price\":"+target.getPrice()
+										+ ",\"BS\":\""+target.getCommand().toString()+"\"}");
 			if(remaining!=1)
 				response.getWriter().write(" , ");
+			remaining--;
 		}
 		response.getWriter().write(" ], " + user.getCredit() +"]");
 	}

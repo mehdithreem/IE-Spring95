@@ -5,7 +5,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
 
-public abstract class CommandHandler extends HttpServlet {
+public abstract class CommandHandlerRAW extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		StringWriter sw = new StringWriter();
 		Boolean hasError = false;
@@ -17,12 +17,10 @@ public abstract class CommandHandler extends HttpServlet {
 		System.out.println("23131");
 
 		if (hasError) {
-			request.setAttribute("errorMessage", sw.toString());
-			request.getRequestDispatcher("error.jsp").forward(request, response);
-		} else {
-			request.setAttribute("message", sw.toString());
-			request.getRequestDispatcher("message.jsp").forward(request, response);
+			response.setStatus(203);
 		}
+		response.setContentType("text/plain");
+		response.getWriter().write(sw.toString());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
