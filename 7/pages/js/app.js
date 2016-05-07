@@ -1,7 +1,6 @@
-
 (function(){
-	
 	var app = angular.module('stockMarket',[]);
+	var activeUserID;
 
 	app.controller('PanelController', function(){
 		
@@ -16,24 +15,35 @@
 		};
 	});
 
-	app.controller('StockMarketController' , function(){
+	app.controller('StockMarketController' , [ '$http', function($http){
+		this.newUserID;
 		this.products = symbols;
-		this.info = currUser;
+		this.info = info;
 		this.quantity;
 		this.price;
+
+		var that = this;
 		this.buy = function(symbol,type){
-			if (this.quantity === 0 || this.price===0 || this.quantity===null || this.price===null )
+			if (that.quantity === 0 || that.price===0 || that.quantity===null || that.price===null )
 				return;
-			this.info.orders.push({symbolID:symbol,price:this.price,quantity:this.quantity,type:type});
+			that.info.orders.push({symbolID:symbol,price:that.price,quantity:that.quantity,type:type});
 			
-			for(var i = this.market.length - 1; i >= 0; i--) {
-			    if(this.market[i].id === symbol) {
-			    	this.market[i].sellQueue.push({price:this.price,quantity:this.quantity});
+			for(var i = that.market.length - 1; i >= 0; i--) {
+			    if(that.market[i].id === symbol) {
+			    	that.market[i].sellQueue.push({price:that.price,quantity:that.quantity});
 			    }
 			}		
 		};
-		this.market = shares;
-	});
+
+		this.loginUser = function(argument) {
+			activeUserID = that.newUserID;
+		}
+
+		$http.get('symbols.json').success(function(data) {
+			console.log(data);
+			that.market = data;
+		});
+	}]);
 
 	app.controller('ListController', function(){
 		this.tab=0;
@@ -83,29 +93,10 @@
 	];
 
 	app.controller('UserController', function(){
-		this.info = currUser;
-		
-		this.acceptOrder = function(symbolID){
-			for(var i = this.info.orders.length - 1; i >= 0; i--) {
-			    if(this.info.orders[i].symbolID === symbolID) {
-			    	this.info.acceptOrders.push(this.info.orders[i]);
-			    	this.info.orders.splice(i, 1);
-			    }
-			}
-		};
-
-		this.rejectOrder = function(symbolID){
-			for(var i = this.info.orders.length - 1; i >= 0; i--) {
-			    if(this.info.orders[i].symbolID === symbolID) {
-			    	this.info.rejectOrders.push(this.info.orders[i]);
-			    	this.info.orders.splice(i, 1);
-			    }
-			}
-		};
-
+		this.info = info;
 	});
 
-	var currUser = {
+	var info = {
 		ID: 12345,
 		name: 'ame',
 		lastName: 'ghezi',
@@ -125,8 +116,8 @@
 			}
 		],
 		image:{
-			full:'1.jpg',
-			thumb:'1.jpg'
+			full:'./stuff/1.jpg',
+			thumb:'./stuff/1.jpg'
 		},
 	}
 	

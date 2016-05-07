@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html ng-app="stockMarket" style="background-image: url('./stuff/2.jpg');" >
+
+<head>
+	<title>Stock Market</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="./css/background.css" />
+</head>
+<body ng-controller="StockMarketController as sm">
+	<section ng-controller="PanelController as panel"> 
+		<ul class="nav nav-pills">
+			<li ng-class="{ active: panel.isSelected(1)}"> 
+				<a href ng-click="panel.selectTab(1)">Home</a> 
+			</li> 
+			<li ng-class="{ active: panel.isSelected(2)}"> 
+				<a href ng-click="panel.selectTab(2)">Market</a> 
+			</li> 
+			<li ng-class="{ active: panel.isSelected(3)}"> 
+				<a href ng-click="panel.selectTab(3)">Symbols</a> 
+			</li>
+			<li> 
+				<a href data-toggle="modal" data-target="#LoginModal">Login</a> 
+			</li>
+	   	</ul>
+
+	   	<!-- Modal -->
+		<div class="modal fade" id="LoginModal" role="dialog">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Change User</h4>
+					</div>
+					<div class="modal-body">
+						<input type="number" class="form-control" ng-model="sm.newUserID" placeholder="Enter User ID">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-info" href ng-click="sm.loginUser()" data-dismiss="modal">Login</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	   	<div class="panel" ng-show="panel.isSelected(1)" ng-controller="UserController as user">
+	   		<font color="AliceBlue" size="6">Home</font>  
+	   			<p>
+	   				<img ng-src="{{user.info.image.full}}" class="img-circle" alt="Cinque Terre" width="104" height="104"/>
+	   			</p>
+	   			<p>
+	   				<em class="text-primary">{{user.info.name+" "+user.info.lastName}}</em>
+	   			</p>
+	   			<p>
+	   				<em class="text-muted">@{{sm.newUserID}}</em>
+	   			</p>
+	   			<p>
+	   				credit :
+	   				{{user.info.credit | currency}}
+	   			</p>
+
+				<div class="panel panel-primary">
+			    	<div class="panel-heading" >Shares</div>
+			    	<div class="panel-body" ng-repeat="share in user.info.shares">
+				  		<table class="table table-bordered">
+				  			<thead>
+				  				<tr class="info">
+					  				<th>Symbol </th>
+					  				<th>Quantity</th>
+				  				</tr>
+				  			</thead>
+				  			<tbody>
+				  				<tr class="info">
+				  					<td> {{share.symbolID}} </td>
+				  					<td> {{share.quantity}} </td>
+				  				</tr>
+				  			</tbody>
+				  		</table>
+			    	</div>
+				</div>
+
+	   			<ul class="list-group" >
+				<li class="list-group-item list-group-item-info" ng-controller="ListController as list">
+				  	<span href ng-click="list.selectTab()" class="badge">{{user.info.orders.length}}</span>Orders
+				  	<div ng-show="list.isSelected()">
+				  		<table class="table table-bordered">
+				  			<thead>
+				  				<td> Symbol </td>
+			  					<td> Quantity </td>
+			  					<td> Price </td>
+			  					<td> Type </td>
+				  			</thead>
+				  			<tbody>
+				  				<tr class="info" ng-repeat="order in user.info.orders">
+				  					<td> {{order.symbolID}} </td>
+				  					<td> {{order.quantity}} </td>
+				  					<td> {{order.price}} </td>
+				  					<td> {{order.type}} </td>
+				  				</tr>
+				  			</tbody>
+				  		</table>
+				  	</div>
+				</li>
+				</ul>
+	   	</div>
+ 		<div class="panel" ng-show="panel.isSelected(2)">
+			<font color="AliceBlue" size="6">Market</font>
+			<div ng-repeat="symbol in sm.market">
+				<table class="table table-bordered">
+		  			<thead>
+		  				<tr class="info">
+			  				<th>{{symbol.NAME}}</th>
+		  				</tr>
+		  			</thead>
+		  			<tbody>
+		  				<tr class="success" ng-repeat="sell in symbol.SELL">
+		  					<td> owner id: {{sell[0]}} </td>
+		  					<td> count: {{sell[1]}} </td>
+		  					<td> price: ${{sell[2]}} </td>
+		  				</tr>
+		  				<tr class="danger" ng-repeat="buy in symbol.BUY">
+		  					<td> owner id: {{buy[0]}} </td>
+		  					<td> count: {{buy[1]}} </td>
+		  					<td> price: ${{buy[2]}} </td>
+		  				</tr>
+		  			</tbody>
+		  		</table>
+			</div>
+		</div>
+		<div class="panel" ng-show="panel.isSelected(3)" >
+			<font color="AliceBlue" size="6">Symbols</font> 
+			<div ng-repeat=" symbol in sm.products ">
+				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"> {{symbol.id}}</button>
+
+			  <!-- Modal -->
+				<div class="modal fade" id="myModal" role="dialog">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" href ng-click="sm.buy(symbol.id,symbol.type)" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">{{symbol.type}}	{{symbol.id}}</h4>
+							</div>
+							<div class="modal-body">
+								<input type="number" class="form-control" ng-model="sm.quantity" placeholder="Enter quantity">
+								<input type="currency" class="form-control" ng-model="sm.price" placeholder="Enter price">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-info" href ng-click="sm.buy(symbol.id,symbol.type)" data-dismiss="modal">buy</button>
+			        		</div>
+			      		</div>
+			    	</div>
+			  	</div>	
+			</div>
+		</div>
+	</section>
+	<script type="text/javascript" src="./js/jquery-1.12.3.min.js"></script>
+  	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/angular.min.js"></script>
+	<script type="text/javascript" src="./js/app.js"></script>
+</body>
+</html>

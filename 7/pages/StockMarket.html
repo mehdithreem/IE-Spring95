@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 
-<html ng-app="stockMarket" style="background-image: url('2.jpg');" >
+<html ng-app="stockMarket" style="background-image: url('./stuff/2.jpg');" >
 
 <head>
 	<title>Stock Market</title>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="background.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="./css/background.css" />
 </head>
 <body ng-controller="StockMarketController as sm">
 	<section ng-controller="PanelController as panel"> 
@@ -23,7 +21,28 @@
 			<li ng-class="{ active: panel.isSelected(3)}"> 
 				<a href ng-click="panel.selectTab(3)">Symbols</a> 
 			</li>
+			<li> 
+				<a href data-toggle="modal" data-target="#LoginModal">Login</a> 
+			</li>
 	   	</ul>
+
+	   	<!-- Modal -->
+		<div class="modal fade" id="LoginModal" role="dialog">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Change User</h4>
+					</div>
+					<div class="modal-body">
+						<input type="number" class="form-control" ng-model="sm.newUserID" placeholder="Enter User ID">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-info" href ng-click="sm.loginUser()" data-dismiss="modal">Login</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	   	<div class="panel" ng-show="panel.isSelected(1)" ng-controller="UserController as user">
 	   		<font color="AliceBlue" size="6">Home</font>  
 	   			<p>
@@ -33,7 +52,7 @@
 	   				<em class="text-primary">{{user.info.name+" "+user.info.lastName}}</em>
 	   			</p>
 	   			<p>
-	   				<em class="text-muted">@{{user.info.ID}}</em>
+	   				<em class="text-muted">@{{sm.newUserID}}</em>
 	   			</p>
 	   			<p>
 	   				credit :
@@ -90,17 +109,19 @@
 				<table class="table table-bordered">
 		  			<thead>
 		  				<tr class="info">
-			  				<th>{{symbol.id}}</th>
+			  				<th>{{symbol.NAME}}</th>
 		  				</tr>
 		  			</thead>
 		  			<tbody>
-		  				<tr class="success" ng-repeat="sell in symbol.sellQueue">
-		  					<td> {{sell.quantity}} </td>
-		  					<td> {{sell.price}} </td>
+		  				<tr class="success" ng-repeat="sell in symbol.SELL">
+		  					<td> owner id: {{sell[0]}} </td>
+		  					<td> count: {{sell[1]}} </td>
+		  					<td> price: ${{sell[2]}} </td>
 		  				</tr>
-		  				<tr class="danger" ng-repeat="buy in symbol.buyQueue">
-		  					<td> {{buy.quantity}} </td>
-		  					<td> {{buy.price}} </td>
+		  				<tr class="danger" ng-repeat="buy in symbol.BUY">
+		  					<td> owner id: {{buy[0]}} </td>
+		  					<td> count: {{buy[1]}} </td>
+		  					<td> price: ${{buy[2]}} </td>
 		  				</tr>
 		  			</tbody>
 		  		</table>
@@ -132,8 +153,9 @@
 			</div>
 		</div>
 	</section>
-	<script type="text/javascript" src="jquery.min.js"></script>
-	<script type="text/javascript" src="angular.min.js"></script>
-	<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript" src="./js/jquery-1.12.3.min.js"></script>
+  	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/angular.min.js"></script>
+	<script type="text/javascript" src="./js/app.js"></script>
 </body>
 </html>
