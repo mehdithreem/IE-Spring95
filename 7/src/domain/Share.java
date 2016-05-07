@@ -10,6 +10,10 @@ class Share {
 		quantity = _quantity;
 	}
 
+	public Symbol getSymbol(){
+		return symbol;
+	}
+
 	public void IncQuantity(Integer value) {
 		quantity += value;
 	}

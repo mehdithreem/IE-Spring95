@@ -27,6 +27,14 @@ public class User {
 		rejectedOrds = new ArrayList<Order>();
 	}
 
+	public List<Order> getOrders(){
+		return ords;
+	}
+
+	public Map<String, Share> getShares(){
+		return shares;
+	}
+
 	public Integer getID() {
 		return ID;
 	}
