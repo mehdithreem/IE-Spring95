@@ -1,0 +1,1 @@
+java -jar sqltool.jar --inlineRc=url=jdbc:hsqldb:hsql://localhost/stocks,user=SA,password= $1

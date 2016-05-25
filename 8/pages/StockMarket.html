@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html ng-app="stockMarket" >
+
+<head>
+	<title>Stock Market</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
+</head>
+
+<body ng-controller="StockMarketController as sm">
+	<section ng-controller="PanelController as panel"> 
+		<ul class="nav nav-pills">
+			<li ng-class="{ active: panel.isSelected(1)}"> 
+				<a href ng-click="panel.selectTab(1)">Home</a> 
+			</li> 
+			<li ng-class="{ active: panel.isSelected(2)}"> 
+				<a href ng-click="panel.selectTab(2)">Market</a> 
+			</li> 
+			<li ng-class="{ active: panel.isSelected(3)}"> 
+				<a href ng-click="panel.selectTab(3)">Symbols</a> 
+			</li>
+			<li> 
+				<a href data-toggle="modal" data-target="#LoginModal">Login</a> 
+			</li>
+	   	</ul>
+
+		<div class="modal fade" id="LoginModal" role="dialog">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Change User</h4>
+					</div>
+					<div class="modal-body">
+						<input type="number" class="form-control" ng-model="newUserID" placeholder="Enter User ID">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-info" href ng-click="sm.loginUser(newUserID)" data-dismiss="modal">Login</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	   	<div class="panel" ng-show="panel.isSelected(1)">
+	   		<h1>Home</h1>
+	   			<h2>User ID:
+	   				<em class="text-muted">@{{sm.activeUser}}</em>
+	   			</h2>
+	   			<h3>
+	   				credit :
+	   				{{sm.info[2] | currency}}
+	   			</h3>
+
+				<div class="panel panel-primary">
+			    	<div class="panel-heading" >Shares</div>
+			    	<div class="panel-body" ng-repeat="share in sm.info[0]">
+				  		<table class="table table-bordered">
+				  			<thead>
+				  				<tr class="info">
+					  				<th>Symbol</th>
+					  				<th>Quantity</th>
+				  				</tr>
+				  			</thead>
+				  			<tbody>
+				  				<tr class="info">
+				  					<td> {{share.Symbol}} </td>
+				  					<td> {{share.Quantity}} </td>
+				  				</tr>
+				  			</tbody>
+				  		</table>
+			    	</div>
+				</div>
+
+	   			<ul class="list-group" >
+				<li class="list-group-item list-group-item-info" ng-controller="ListController as list">
+				  	<span href ng-click="list.selectTab()" class="badge">{{sm.info[1].length}}</span>Orders
+				  	<div ng-show="list.isSelected()">
+				  		<table class="table table-bordered">
+				  			<thead>
+				  				<td> Symbol </td>
+			  					<td> Quantity </td>
+			  					<td> Price </td>
+			  					<td> Type </td>
+				  			</thead>
+				  			<tbody>
+				  				<tr class="info" ng-repeat="order in sm.info[1]">
+				  					<td> {{order.Symbol}} </td>
+				  					<td> {{order.Quantity}} </td>
+				  					<td> {{order.Price}} </td>
+				  					<td> {{order.BS}} </td>
+				  				</tr>
+				  			</tbody>
+				  		</table>
+				  	</div>
+				</li>
+				</ul>
+	   	</div>
+ 		<div class="panel" ng-show="panel.isSelected(2)">
+			<h1>Market</h1>
+			<button type="button" class="btn btn-info" href ng-click="sm.refreshtMarket()">Update</button>
+			<div ng-repeat="symbol in sm.market">
+				<table class="table table-bordered">
+		  			<thead>
+		  				<tr class="info">
+			  				<th>{{symbol.NAME}}</th>
+		  				</tr>
+		  			</thead>
+		  			<tbody>
+		  				<tr class="success" ng-repeat="sell in symbol.SELL">
+		  					<td> owner id: {{sell[0]}} </td>
+		  					<td> count: {{sell[1]}} </td>
+		  					<td> price: ${{sell[2]}} </td>
+		  				</tr>
+		  				<tr class="danger" ng-repeat="buy in symbol.BUY">
+		  					<td> owner id: {{buy[0]}} </td>
+		  					<td> count: {{buy[1]}} </td>
+		  					<td> price: ${{buy[2]}} </td>
+		  				</tr>
+		  			</tbody>
+		  		</table>
+			</div>
+		</div>
+		<div class="panel" ng-show="panel.isSelected(3)" >
+			<H1>Symbols</H1>
+			<div ng-repeat=" symbol in sm.market | orderBy:'NAME'">
+				<button type="button" class="btn btn-info btn-lg" ng-click="sm.clearMarketTimer()" data-toggle="modal" data-target="#{{symbol.NAME+'Modal'}}"> {{symbol.NAME}}</button>
+
+			  <!-- Modal -->
+				<div class="buysymboldialog modal fade" id="{{symbol.NAME+'Modal'}}" role="dialog">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" href ng-click="sm.initMarketTimer()" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">{{symbol.NAME}}</h4>
+							</div>
+							<div class="modal-body">
+								<input type="number" class="form-control" ng-model="quantity" placeholder="Enter quantity">
+								<input type="currency" class="form-control" ng-model="price" placeholder="Enter price">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-info" href ng-click="sm.sellOrBuy('send-buy',symbol.NAME,quantity,price);">GTC BUY</button>
+								<button type="button" class="btn btn-info" href ng-click="sm.sellOrBuy('send-sell',symbol.NAME,quantity,price);">GTC SELL</button>
+								<h3>{{sm.message}}</h3>
+			        		</div>
+			      		</div>
+			    	</div>
+			  	</div>	
+			</div>
+		</div>
+	</section>
+	<script type="text/javascript" src="./js/jquery-1.12.3.min.js"></script>
+  	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/angular.min.js"></script>
+	<script type="text/javascript" src="./js/app.js"></script>
+</body>
+</html>

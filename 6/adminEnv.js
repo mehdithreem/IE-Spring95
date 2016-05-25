@@ -38,7 +38,7 @@ var set = function (rl, whouse, cbook, menu, urep) {
 			if (!amount || line.trim().split(" ").length < 3 || isNaN(Number(amount))) {
 				console.log('estimate what?');
 			} else {
-				var ret = whouse.printEstimate(cbook, name, Number(amount));
+				var ret = whouse.estimate(cbook, name, Number(amount));
 				if (ret == undefined)
 					console.log("What is " + name + "?");
 				else if (ret != true)

@@ -1,0 +1,87 @@
+/*C1*/SET SCHEMA SYSTEM_LOBS
+INSERT INTO BLOCKS VALUES(0,2147483647,0)
+COMMIT
+/*C2*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C3*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C4*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C5*/SET SCHEMA PUBLIC
+create table DECLARATION (ID integer not null, COUNTRY varchar(255), STATUS varchar(255), TIME date, TRANSPORT_TYPE varchar(255), merchant_NID varchar(255), primary key (ID))
+create table Declaration_goods (Declaration_ID integer not null, CNT integer, NAME varchar(255), PRODUCER varchar(255), UNIT_PRICE integer, WEIGHT integer)
+create table DECLARATION_License (Declaration_ID integer not null, requiredLicenses_id integer not null)
+create table DECLARATION_Permission (Declaration_ID integer not null, issuedPermissions_ID integer not null)
+create table License (id integer not null, TITLE varchar(255), VALID_DURATION integer, issuer_NID varchar(255), primary key (id))
+create table MERCHANT (NID varchar(255) not null, FIRST_NAME varchar(255), LAST_NAME varchar(255), primary key (NID))
+create table Permission (ID integer not null, COUNTRY varchar(255), GOOD_COUNT integer, GOOD_NAME varchar(255), GOOD_PRODUCER varchar(255), PERMIT_DATE date, TRANSPORT_TYPE varchar(255), TOTAL_VALUE integer, license_id integer, owner_NID varchar(255), primary key (ID))
+create table USER (type varchar(31) not null, NID varchar(255) not null, FIRST_NAME varchar(255), LAST_NAME varchar(255), PASSWORD varchar(255), ORG_NAME varchar(255), primary key (NID))
+create table User_access (User_NID varchar(255) not null, ACC_BOOLEAN boolean, ACCESS integer not null, primary key (User_NID, ACCESS))
+alter table DECLARATION_Permission add constraint UK_6chr2itr9pf243hrrx1vwxht6 unique (issuedPermissions_ID)
+alter table License add constraint UK_ht0c6en4hae4e35r1or0mnrr0 unique (TITLE)
+create sequence hibernate_sequence start with 1 increment by 1
+alter table DECLARATION add constraint FK7bhbf42gqwda2pcsteoibqmn2 foreign key (merchant_NID) references MERCHANT
+alter table Declaration_goods add constraint FK4pw8aoewsjvml80tos0ifa8lc foreign key (Declaration_ID) references DECLARATION
+alter table DECLARATION_License add constraint FKlhru07l5a139r4q66tsq68tn2 foreign key (requiredLicenses_id) references License
+alter table DECLARATION_License add constraint FK6w8b7wjmy6y1y80nygfmjug7p foreign key (Declaration_ID) references DECLARATION
+alter table DECLARATION_Permission add constraint FKrip0w8i2l84thp6uju2hx257s foreign key (issuedPermissions_ID) references Permission
+alter table DECLARATION_Permission add constraint FKj1h479copoc4eumhuxg06dbik foreign key (Declaration_ID) references DECLARATION
+alter table License add constraint FK90w3tnruhoxckphq3kjy3686w foreign key (issuer_NID) references USER
+alter table Permission add constraint FK2nc5jkjn23vbih8123sk2gvmj foreign key (license_id) references License
+alter table Permission add constraint FK4l18mqodb6u8afosbokd5gb4s foreign key (owner_NID) references MERCHANT
+alter table User_access add constraint FKtrrlkmty7td6hkvuo2y88vku4 foreign key (User_NID) references USER
+INSERT INTO USER VALUES('ADMIN','admin','Super','Power','admin',NULL)
+INSERT INTO USER_ACCESS VALUES('admin',TRUE,10)
+INSERT INTO USER_ACCESS VALUES('admin',TRUE,11)
+INSERT INTO USER_ACCESS VALUES('admin',FALSE,1)
+INSERT INTO USER_ACCESS VALUES('admin',FALSE,2)
+INSERT INTO USER_ACCESS VALUES('admin',FALSE,0)
+INSERT INTO USER_ACCESS VALUES('admin',FALSE,6)
+INSERT INTO USER_ACCESS VALUES('admin',FALSE,7)
+INSERT INTO USER_ACCESS VALUES('admin',FALSE,3)
+INSERT INTO USER_ACCESS VALUES('admin',FALSE,4)
+INSERT INTO USER_ACCESS VALUES('admin',FALSE,5)
+INSERT INTO USER_ACCESS VALUES('admin',FALSE,8)
+INSERT INTO USER_ACCESS VALUES('admin',TRUE,9)
+COMMIT
+INSERT INTO USER VALUES('AGENT','123','Agent','Agentian','123','AB')
+INSERT INTO USER_ACCESS VALUES('123',FALSE,10)
+INSERT INTO USER_ACCESS VALUES('123',FALSE,11)
+INSERT INTO USER_ACCESS VALUES('123',FALSE,1)
+INSERT INTO USER_ACCESS VALUES('123',FALSE,2)
+INSERT INTO USER_ACCESS VALUES('123',FALSE,0)
+INSERT INTO USER_ACCESS VALUES('123',FALSE,6)
+INSERT INTO USER_ACCESS VALUES('123',FALSE,7)
+INSERT INTO USER_ACCESS VALUES('123',TRUE,3)
+INSERT INTO USER_ACCESS VALUES('123',FALSE,4)
+INSERT INTO USER_ACCESS VALUES('123',FALSE,5)
+INSERT INTO USER_ACCESS VALUES('123',FALSE,8)
+INSERT INTO USER_ACCESS VALUES('123',FALSE,9)
+COMMIT
+INSERT INTO LICENSE VALUES(1,'\u0645\u062c\u0648\u0632 \u062a\u0633\u062a',10,'123')
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 2
+COMMIT
+INSERT INTO LICENSE VALUES(2,'\u06f2 \u0645\u062c\u0648\u0632 \u062a\u0633\u062a',10,'123')
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 3
+COMMIT
+INSERT INTO MERCHANT VALUES('nahal','1','2')
+COMMIT
+INSERT INTO DECLARATION VALUES(3,'jklkj','PENDING','2016-05-25','Land','nahal')
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 4
+COMMIT
+DELETE FROM DECLARATION WHERE ID=3
+INSERT INTO DECLARATION VALUES(3,'jklkj','PENDING','2016-05-25','Land','nahal')
+INSERT INTO DECLARATION_LICENSE VALUES(3,1)
+INSERT INTO DECLARATION_LICENSE VALUES(3,2)
+COMMIT
+INSERT INTO DECLARATION VALUES(4,'sfjndkjf','PENDING','2016-05-25','Maritime','nahal')
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 5
+COMMIT
+DELETE FROM DECLARATION WHERE ID=4
+INSERT INTO DECLARATION VALUES(4,'sfjndkjf','PENDING','2016-05-25','Maritime','nahal')
+INSERT INTO DECLARATION_LICENSE VALUES(4,1)
+INSERT INTO DECLARATION_LICENSE VALUES(4,2)
+COMMIT
+/*C6*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C5*/DISCONNECT

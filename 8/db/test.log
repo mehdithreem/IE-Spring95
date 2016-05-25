@@ -1,0 +1,72 @@
+/*C27*/SET SCHEMA PUBLIC
+create sequence hibernate_sequence start with 1 increment by 1
+INSERT INTO STUDENT VALUES(1,'SKCET','ECE3','Nahal#','2016-05-17','BOZ')
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 2
+COMMIT
+DISCONNECT
+/*C28*/SET SCHEMA PUBLIC
+INSERT INTO STUDENT VALUES(2,'SKCET','ECE3','Nahal#','2016-05-17','BOZ')
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 3
+COMMIT
+DISCONNECT
+/*C29*/SET SCHEMA PUBLIC
+INSERT INTO STUDENT VALUES(3,'SKCET','ECE3','Nahal#','2016-05-17','BOZ')
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 4
+COMMIT
+DISCONNECT
+/*C30*/SET SCHEMA PUBLIC
+INSERT INTO STUDENT VALUES(4,'SKCET','ECE3','Nahal#','2016-05-17','BOZ')
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 5
+COMMIT
+DISCONNECT
+/*C31*/SET SCHEMA PUBLIC
+INSERT INTO STUDENT VALUES(5,'SKCET','ECE3','Nahal#','2016-05-17','BOZ')
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 6
+COMMIT
+DISCONNECT
+/*C32*/SET SCHEMA PUBLIC
+INSERT INTO STUDENT VALUES(6,'SKCET','ECE3','Nahal#','2016-05-17','BOZ')
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 7
+COMMIT
+DELETE FROM STUDENT WHERE ID=2
+INSERT INTO STUDENT VALUES(2,'SKCET','ECE3','Mahdiz','2016-05-17','BOZ')
+COMMIT
+DISCONNECT
+/*C33*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C34*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C35*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C36*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C37*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C38*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C39*/SET SCHEMA PUBLIC
+create table ACCESS_LIST (Agent_NID varchar(255) not null, ACC_BOOLEAN boolean, ACCESS integer not null, Admin_NID varchar(255) not null, primary key (Admin_NID, ACCESS))
+create table ADMIN (NID varchar(255) not null, FIRST_NAME varchar(255), LAST_NAME varchar(255), PASSWORD varchar(255), primary key (NID))
+create table Agent (NID varchar(255) not null, FIRST_NAME varchar(255), LAST_NAME varchar(255), PASSWORD varchar(255), ORG_NAME varchar(255), primary key (NID))
+create table DECLARATION (ID integer not null, COUNTRY varchar(255), STATUS varchar(255), TIME date, TRANSPORT_TYPE varchar(255), merchant_NID varchar(255), primary key (ID))
+create table DECLARATION_Permission (Declaration_ID integer not null, pendingPermission_ID integer not null, issuedPermission_ID integer not null)
+create table License (id integer not null, TITLE varchar(255), VALID_DURATION integer, issuer_NID varchar(255), primary key (id))
+create table MERCHANT (NID varchar(255) not null, FIRST_NAME varchar(255), LAST_NAME varchar(255), primary key (NID))
+create table Permission (ID integer not null, COUNTRY varchar(255), GOOD_COUNT varchar(255), GOOD_NAME varchar(255), GOOD_PRODUCER varchar(255), PERMIT_DATE date, TRANSPORT_TYPE varchar(255), TOTAL_VALUE integer, license_id integer, owner_NID varchar(255), primary key (ID))
+alter table DECLARATION_Permission add constraint UK_7uckyt8etmnnv82hm7ug9yq6h unique (pendingPermission_ID)
+alter table DECLARATION_Permission add constraint UK_s6eglgbdi273lb6a4igfoh3om unique (issuedPermission_ID)
+alter table ACCESS_LIST add constraint FK3g89royjxxol9pw4ciq1q5src foreign key (Agent_NID) references Agent
+alter table ACCESS_LIST add constraint FK6r3ejccnkvlc7h0wsisv9g24u foreign key (Admin_NID) references ADMIN
+alter table DECLARATION add constraint FK7bhbf42gqwda2pcsteoibqmn2 foreign key (merchant_NID) references MERCHANT
+alter table DECLARATION_Permission add constraint FKh3wxt89bqqnosqvx5knkblpf9 foreign key (pendingPermission_ID) references Permission
+alter table DECLARATION_Permission add constraint FKj1h479copoc4eumhuxg06dbik foreign key (Declaration_ID) references DECLARATION
+alter table DECLARATION_Permission add constraint FKftvdjm744uifm57vop92vvapn foreign key (issuedPermission_ID) references Permission
+alter table License add constraint FK183nvhys41yrco4b78m9lnnll foreign key (issuer_NID) references Agent
+alter table Permission add constraint FK2nc5jkjn23vbih8123sk2gvmj foreign key (license_id) references License
+alter table Permission add constraint FK4l18mqodb6u8afosbokd5gb4s foreign key (owner_NID) references MERCHANT
+DISCONNECT
+/*C26*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C40*/SET SCHEMA PUBLIC
+DROP TABLE ACCESS_LIST
+DISCONNECT
