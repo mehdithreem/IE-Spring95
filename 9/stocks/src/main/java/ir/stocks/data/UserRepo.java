@@ -4,6 +4,10 @@ import ir.stocks.domain.Role;
 import ir.stocks.domain.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UserRepo {
 	private static UserRepo repo = null;
@@ -68,6 +72,33 @@ public class UserRepo {
 
 		con.close();
 		return retval;
+	}
+	
+	public Map<Role,Boolean> getUserRolesMap(String username) throws SQLException {
+		Map<Role, Boolean> ret = new HashMap<Role, Boolean>();
+		for(Role r : Role.values()) {
+			ret.put(r, false);
+		}
+		
+		for(Role r : getUserRoles(username)) {
+			ret.replace(r, true);
+		}
+		
+		return ret;
+	}
+	
+	public List<Role> getUserRoles(String username) throws SQLException {
+		Connection con = JDBCUtil.getConnection();
+		Statement st = con.createStatement();
+		
+		List<Role> ret = new ArrayList<Role>();		
+		ResultSet rs = st.executeQuery("select role from user_roles where username='" + username + "'");
+		while (rs.next()) {
+			ret.add(Role.valueOf(rs.getString(1).toUpperCase()));
+		}
+		
+		con.close();
+		return ret;
 	}
 
 }
