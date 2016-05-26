@@ -11,7 +11,7 @@ import ir.stocks.controller.Controller;
 import ir.stocks.data.DepositRequestRepo;
 import ir.stocks.domain.DepositRequest;
 
-@WebServlet("/user/deposit")
+@WebServlet("/app/user/deposit")
 public class Create extends Controller {
 	private static final long serialVersionUID = 198263704817170780L;
 	

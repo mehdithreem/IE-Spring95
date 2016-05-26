@@ -1,7 +1,7 @@
 package ir.stocks.domain;
 
 public enum Role {
-	REGULAR,
+	MEMBER,
 	FINANCE,
 	COMPANY,
 	ADMIN

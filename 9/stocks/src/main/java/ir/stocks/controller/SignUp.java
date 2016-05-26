@@ -1,4 +1,4 @@
-package ir.stocks.controller.sign_up;
+package ir.stocks.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -8,11 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hsqldb.rights.User;
-
-import ir.stocks.controller.Controller;
-import ir.stocks.data.DepositRequestRepo;
 import ir.stocks.data.UserRepo;
+import ir.stocks.domain.User;
 
 @WebServlet("/app/signUp")
 public class SignUp extends Controller {
@@ -28,11 +25,11 @@ public class SignUp extends Controller {
 		
 		try {
 			UserRepo.getRepository().create(
-					new User(request.getAttribute("username"), 
-							request.getAttribute("password"), 
-							request.getAttribute("name"), 
-							request.getAttribute("lastName"), 
-							request.getAttribute("email"))
+					new User((String) request.getAttribute("username"), 
+							(String) request.getAttribute("password"), 
+							(String) request.getAttribute("name"), 
+							(String) request.getAttribute("lastName"), 
+							(String) request.getAttribute("email"))
 			);
 		}  catch (SQLException e) {
 			response.setStatus(406);

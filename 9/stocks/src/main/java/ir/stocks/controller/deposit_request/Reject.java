@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import ir.stocks.controller.Controller;
 import ir.stocks.data.DepositRequestRepo;
 
-@WebServlet("/finance/deposit/reject")
+@WebServlet("/app/finance/deposit/reject")
 public class Reject extends Controller {
 	private static final long serialVersionUID = 1464486337788353668L;
 
