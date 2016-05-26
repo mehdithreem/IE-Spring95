@@ -1,4 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <% 
 session.invalidate(); 
-request.getRequestDispatcher("/Index.jsp").forward(request, response);
 %>
+
+<c:redirect url="/" />
