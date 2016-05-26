@@ -31,6 +31,10 @@
   <servlet-name>signUp_form</servlet-name>
   <jsp-file>/SignUp.jsp</jsp-file>
  </servlet>
+ <servlet>
+  <servlet-name>deposit-user-manager</servlet-name>
+  <jsp-file>/DepositUserManager.jsp</jsp-file>
+ </servlet>
  <servlet-mapping>
   <servlet-name>index-jsp</servlet-name>
   <url-pattern>/app/</url-pattern>
@@ -50,6 +54,10 @@
  <servlet-mapping>
   <servlet-name>signUp_form</servlet-name>
   <url-pattern>/app/signUp-form</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>deposit-user-manager</servlet-name>
+  <url-pattern>/app/credit</url-pattern>
  </servlet-mapping>
  <mime-mapping>
   <extension>css</extension>

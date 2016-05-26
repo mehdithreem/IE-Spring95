@@ -22,7 +22,7 @@
     وضعیت بازار
   </a>
   <% if (user != null && role != null && (role.get(Role.MEMBER) || role.get(Role.ADMIN))) { %>
-  <a class="item" id="menu-credit" href="<c:url value="/" />">
+  <a class="item" id="menu-credit" href="<c:url value="/credit" />">
     <i class="money icon"></i>
     اعتبار
   </a>

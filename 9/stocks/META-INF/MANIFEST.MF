@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: stocks
-Bundle-SymbolicName: stocks
-Bundle-Version: 1.0.0.qualifier
-Export-Package: ir.stocks.controller,
- ir.stocks.controller.deposit_request,
- ir.stocks.data,
- ir.stocks.domain

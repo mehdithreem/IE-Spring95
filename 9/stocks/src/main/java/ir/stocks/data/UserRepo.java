@@ -19,26 +19,6 @@ public class UserRepo {
 		return repo;
 	}
 
-<<<<<<< HEAD
-	public boolean create(User user) throws SQLException {
-		Connection con = JDBCUtil.getConnection();
-		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("select id from user where username = " + String.valueOf(user.getUsername()));
-
-		if (rs.next()) {
-			con.close();
-			return false;
-		}
-
-		st.executeUpdate("insert into user values ('" +
-			user.getUsername() + "','" +
-			user.getPassword() + "','" +
-			user.getName() + "','" +
-			user.getLastName() + "','" +
-			user.getEmail() + "'," +
-			String.valueOf(user.getCredit()) + ");"
-			);
-=======
 	public void create(User target) throws SQLException {
 		Connection con = JDBCUtil.getConnection();
 		Statement st = con.createStatement();
@@ -59,7 +39,6 @@ public class UserRepo {
 		System.out.println(exeStr);	
 		st.executeUpdate(exeStr);
 		
->>>>>>> 30490304002db4706d955d6c9a2a7d4b13cb9267
 		con.close();
 	}
 	

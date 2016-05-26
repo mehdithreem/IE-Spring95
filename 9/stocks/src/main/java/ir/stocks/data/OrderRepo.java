@@ -1,12 +1,10 @@
 package ir.stocks.data;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import ir.stocks.domain.Order;
-import ir.stocks.domain.Share;
 import ir.stocks.domain.Status;
 
 public class OrderRepo {
