@@ -1,5 +1,6 @@
 package ir.stocks.data;
 
+import ir.stocks.domain.Role;
 import ir.stocks.domain.User;
 
 import java.sql.*;
@@ -14,26 +15,27 @@ public class UserRepo {
 		return repo;
 	}
 
-	public boolean create(User target) throws SQLException {
+	public void create(User target) throws SQLException {
 		Connection con = JDBCUtil.getConnection();
 		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("select id from user where username = " + String.valueOf(target.getUsername()));
-
-		if (rs.next()) {
-			con.close();
-			return false;
-		}
-
-		st.executeUpdate("insert into user values ('" +
-			target.getUsername() + "','" +
-			target.getPassword() + "','" +
-			target.getName() + "','" +
-			target.getLastName() + "','" +
-			target.getEmail() + "'," +
-			String.valueOf(target.getCredit()) + ");"
-			);
+		
+		String exeStr = "insert into user values ('" +
+				target.getUsername() + "','" +
+				target.getPassword() + "','" +
+				target.getName() + "','" +
+				target.getLastName() + "','" +
+				target.getEmail() + "'," +
+				String.valueOf(target.getCredit()) + ");";
+		System.out.println(exeStr);	
+		st.executeUpdate(exeStr);
+		
+		exeStr = "insert into user_roles values ('" +
+				target.getUsername() + "','" +
+				Role.MEMBER.toString().toLowerCase() + "');";
+		System.out.println(exeStr);	
+		st.executeUpdate(exeStr);
+		
 		con.close();
-		return true;
 	}
 	
 	public User findByUsername(String username) throws SQLException {

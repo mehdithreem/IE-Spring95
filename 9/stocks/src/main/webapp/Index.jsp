@@ -17,7 +17,7 @@
 	<script>$('#menu-home').addClass('active');</script>
 	
 	<div class="content" dir="rtl">
-		<h1>اینجا خانه است!</h1>
+		
 	</div>
 
 </body>

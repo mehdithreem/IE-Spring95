@@ -12,10 +12,11 @@ public class JDBCUtil {
 				Class.forName("org.hsqldb.jdbcDriver");
 			} catch (ClassNotFoundException ex) {
 				System.err.println("Unable to load HSQL JDBC driver");
+				System.out.println("---------Unable to load HSQL JDBC driver");
 		}
 	}
 
 	public static Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(CONN_STR);
+		return DriverManager.getConnection(CONN_STR, "SA", "");
 	}
 }

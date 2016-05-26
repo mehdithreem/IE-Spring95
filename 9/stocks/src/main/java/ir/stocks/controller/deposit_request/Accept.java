@@ -16,19 +16,18 @@ public class Accept extends Controller {
 	private static final long serialVersionUID = 7360908586501934710L;
 	
 	protected void myDoPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getAttribute("reqid") == null) {
+		if(request.getParameter("reqid") == null) {
 			response.setStatus(400);
 			return;
 		}
 		Integer reqid = null;
 		try {
-			Integer.valueOf((String) request.getAttribute("reqid"));
+			Integer.valueOf((String) request.getParameter("reqid"));
 		} catch (NumberFormatException e) {
 			response.setStatus(400);
 			return;
 		}
 			
-		request.getSession().getAttribute("user");
 		try {
 			DepositRequestRepo.getRepository().acceptRequest(reqid);
 		}  catch (SQLException e) {
