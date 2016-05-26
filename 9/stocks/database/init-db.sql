@@ -18,11 +18,12 @@ create table user_roles (
 	references user(username)
 );
 
--- create table symbol (
--- 	id varchar(10) not null,
--- 	primary key (id)
--- );
-
+	create table symbol (
+		id varchar(10) not null,
+		status varchar(10),
+		primary key (id)
+	);
+	
 -- create table share (
 -- 	userid integer not null,
 -- 	symbolid varchar(10) not null,
@@ -54,6 +55,6 @@ create table user_roles (
 -- 	primary key (type),
 -- );
 
-insert into user values ('admin', 'admin', 'Super', 'Power', 'god@universe.com', 0);
+insert into user values ('admin', 'admin', 'Super', 'Power', 'good@universe.com', 0);
 insert into user_roles values ('admin', 'admin');
 insert into user_roles values ('admin', 'regular');

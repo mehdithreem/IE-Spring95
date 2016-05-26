@@ -14,10 +14,10 @@ public class UserRepo {
 		return repo;
 	}
 
-	public boolean create(User target) throws SQLException {
+	public boolean create(User user) throws SQLException {
 		Connection con = JDBCUtil.getConnection();
 		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("select id from user where username = " + String.valueOf(target.getUsername()));
+		ResultSet rs = st.executeQuery("select id from user where username = " + String.valueOf(user.getUsername()));
 
 		if (rs.next()) {
 			con.close();
@@ -25,12 +25,12 @@ public class UserRepo {
 		}
 
 		st.executeUpdate("insert into user values ('" +
-			target.getUsername() + "','" +
-			target.getPassword() + "','" +
-			target.getName() + "','" +
-			target.getLastName() + "','" +
-			target.getEmail() + "'," +
-			String.valueOf(target.getCredit()) + ");"
+			user.getUsername() + "','" +
+			user.getPassword() + "','" +
+			user.getName() + "','" +
+			user.getLastName() + "','" +
+			user.getEmail() + "'," +
+			String.valueOf(user.getCredit()) + ");"
 			);
 		con.close();
 		return true;
