@@ -1,4 +1,4 @@
-package ir.stocks.controller.deposit_request;
+package ir.stocks.controller.sign_up;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -8,10 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hsqldb.rights.User;
+
 import ir.stocks.controller.Controller;
 import ir.stocks.data.DepositRequestRepo;
+import ir.stocks.data.UserRepo;
 
-@WebServlet("/signUp")
+@WebServlet("/app/signUp")
 public class SignUp extends Controller {
 	private static final long serialVersionUID = 1464486337788353668L;
 
