@@ -6,7 +6,7 @@ public class OrderType {
 	private static Set<String> types= new HashSet<String>();
 	private String myType;
 
-	private OrderType(String type) {
+	OrderType(String type) {
 		myType = type;
 	}
 

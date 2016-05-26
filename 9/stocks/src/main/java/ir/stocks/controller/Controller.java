@@ -27,7 +27,7 @@ public abstract class Controller extends HttpServlet {
 				return false;
 			}
 			if (user != null) {
-				session.setAttribute("user", user);
+				request.setAttribute("user", user);
 			}
 		}
 		

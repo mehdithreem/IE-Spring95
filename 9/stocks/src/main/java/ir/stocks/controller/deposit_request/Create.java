@@ -16,12 +16,12 @@ public class Create extends Controller {
 	private static final long serialVersionUID = 198263704817170780L;
 	
 	protected void myDoPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getAttribute("amount") == null) {
+		if(request.getParameter("amount") == null) {
 			response.setStatus(400);
 			return;
 		}
 		try {
-			Integer.valueOf((String) request.getAttribute("amount"));
+			Integer.valueOf((String) request.getParameter("amount"));
 		} catch (NumberFormatException e) {
 			response.setStatus(400);
 			return;

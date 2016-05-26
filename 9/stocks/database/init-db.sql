@@ -32,10 +32,11 @@ create table user_roles (
 -- 	constraint userid_fk foreign key(userid)
 -- 	references user(userid),
 -- 	constraint symbolid_fk foreign key(symbolid)
--- 	references symbol(symbolid)
+-- 	references symbol(symbolid) on delete casecade
 -- );
 
 -- create table order (
+	orderid integer not null,
 -- 	ownerid integer not null,
 -- 	symbolid varchar(10) not null,
 -- 	price integer not null,
@@ -46,7 +47,7 @@ create table user_roles (
 -- 	constraint userid_fk foreign key(userid)
 -- 	references user(userid),
 -- 	constraint symbolid_fk foreign key(symbolid)
--- 	references symbol(symbolid)
+-- 	references symbol(symbolid) on delete casecade
 -- );
 
 -- create table ordertype (

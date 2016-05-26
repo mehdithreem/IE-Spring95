@@ -4,6 +4,7 @@ body {
 	padding: 20px;
 }
 
-body.content {
-	
+body .content {
+	margin-right: 95px;
+	margin-left: 95px;
 }

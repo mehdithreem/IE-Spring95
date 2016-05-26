@@ -27,4 +27,8 @@ public class Share {
 	public Integer getQuantity() {
 		return quantity;
 	}
+	
+	public User getOwner() {
+		return owner;
+	}
 }

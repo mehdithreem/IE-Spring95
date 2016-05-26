@@ -2,33 +2,25 @@ package ir.stocks.domain;
 
 import java.io.*;
 
-enum OrderCommand {
-	BUY,
-	SELL
-}
-
 public abstract class Order {
 	private User owner;
 	private Symbol instrument;
 	private Integer price;
 	private Integer quantity;
 	private OrderType type;
-	private Status status;
-	private OrderCommand command;
+	private String command;
 
-	public void init(User _owner
+	public Order(User _owner
 			,Symbol _instrument
 			,Integer _price
 			,Integer _quantity
-			,OrderType _type
-			,OrderCommand _command) {
+			,String _command) {
 		owner = _owner;
 		instrument = _instrument;
 		price = _price;
 		quantity = _quantity;
-		type = _type;
+		setType(new OrderType("GTC"));
 		command = _command;
-		status = Status.PENDING;
 	}
 
 	public Integer getPrice() {
@@ -47,7 +39,7 @@ public abstract class Order {
 		return quantity;
 	}
 
-	public OrderCommand getCommand() {
+	public String getCommand() {
 		return command;
 	}
 
@@ -55,15 +47,15 @@ public abstract class Order {
 //		status = OrderStatus.ACCEPTED;
 //		owner.acceptOrder(this);
 //
-//		if (command.equals(OrderCommand.BUY)) {
+//		if (command.equals(String.BUY)) {
 //			owner.addShare(instrument, quantity);
-//		} else if (command.equals(OrderCommand.SELL)) {
+//		} else if (command.equals(String.SELL)) {
 //			owner.deposit(quantity*price);
 //			owner.decShare(instrument, quantity);
 //		}
 	}
 
-	protected Symbol getInstrument() {
+	public Symbol getInstrument() {
 		return instrument;
 	}
 
@@ -134,4 +126,14 @@ public abstract class Order {
 	}
 
 	public abstract void Exchange(PrintWriter out);
+
+	public OrderType getType() {
+		return type;
+	}
+
+	public void setType(OrderType type) {
+		this.type = type;
+	}
+	
+	
 }

@@ -1,5 +1,6 @@
 package ir.stocks.data;
 
+import ir.stocks.domain.Role;
 import ir.stocks.domain.User;
 
 import java.sql.*;
@@ -14,6 +15,7 @@ public class UserRepo {
 		return repo;
 	}
 
+<<<<<<< HEAD
 	public boolean create(User user) throws SQLException {
 		Connection con = JDBCUtil.getConnection();
 		Statement st = con.createStatement();
@@ -32,8 +34,29 @@ public class UserRepo {
 			user.getEmail() + "'," +
 			String.valueOf(user.getCredit()) + ");"
 			);
+=======
+	public void create(User target) throws SQLException {
+		Connection con = JDBCUtil.getConnection();
+		Statement st = con.createStatement();
+		
+		String exeStr = "insert into user values ('" +
+				target.getUsername() + "','" +
+				target.getPassword() + "','" +
+				target.getName() + "','" +
+				target.getLastName() + "','" +
+				target.getEmail() + "'," +
+				String.valueOf(target.getCredit()) + ");";
+		System.out.println(exeStr);	
+		st.executeUpdate(exeStr);
+		
+		exeStr = "insert into user_roles values ('" +
+				target.getUsername() + "','" +
+				Role.MEMBER.toString().toLowerCase() + "');";
+		System.out.println(exeStr);	
+		st.executeUpdate(exeStr);
+		
+>>>>>>> 30490304002db4706d955d6c9a2a7d4b13cb9267
 		con.close();
-		return true;
 	}
 	
 	public User findByUsername(String username) throws SQLException {

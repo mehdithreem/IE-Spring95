@@ -11,28 +11,36 @@ import javax.servlet.http.HttpServletResponse;
 import ir.stocks.data.UserRepo;
 import ir.stocks.domain.User;
 
-@WebServlet("/app/signUp")
+@WebServlet("/signUp")
 public class SignUp extends Controller {
 	private static final long serialVersionUID = 1464486337788353668L;
 
 	protected void myDoPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(	request.getAttribute("username") == null || request.getAttribute("name") == null ||
-			request.getAttribute("lastName") == null || request.getAttribute("password") == null ||
-			request.getAttribute("email") == null) {
+		if(	request.getParameter("username") == null || request.getParameter("name") == null ||
+			request.getParameter("lastName") == null || request.getParameter("password") == null ||
+			request.getParameter("email") == null) {
+			System.out.println("bad sign up.");
 			response.setStatus(400);
 			return;
 		}
 		
 		try {
 			UserRepo.getRepository().create(
-					new User((String) request.getAttribute("username"), 
-							(String) request.getAttribute("password"), 
-							(String) request.getAttribute("name"), 
-							(String) request.getAttribute("lastName"), 
-							(String) request.getAttribute("email"))
+					new User((String) request.getParameter("username"), 
+							(String) request.getParameter("password"), 
+							(String) request.getParameter("name"), 
+							(String) request.getParameter("lastName"), 
+							(String) request.getParameter("email"))
 			);
 		}  catch (SQLException e) {
-			response.setStatus(406);
+			request.setAttribute("duplicated", "true");
+			request.getRequestDispatcher("/SignUp.jsp").forward(request, response);
+			System.out.println("duplicated username");
+			return;
 		}
+		
+		request.setAttribute("new_account", "true");
+		request.getRequestDispatcher("/Index.jsp").forward(request, response);
+		System.out.println("user created.");
 	}
 }

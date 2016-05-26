@@ -1,9 +1,4 @@
-<html>
-	<head>
-		<title>Login Error!</title>
-	</head>
-	<body>
-		Unknown username or password!<p>
-	</body>
-</html>
-
+<%
+	request.setAttribute("error", "true");
+	request.getRequestDispatcher("/Login.jsp").forward(request, response);
+%>
