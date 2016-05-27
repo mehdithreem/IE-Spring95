@@ -61,17 +61,22 @@ public class UserRepo {
 		return retval;
 	}
 	
-	public Boolean depositUserCredit(String username, Integer newAmount) throws SQLException {
-		Boolean retval = true;
-		Connection con = JDBCUtil.getConnection();
-		Statement st = con.createStatement();
-		
-		if (st.executeUpdate("update user set credit = credit + " + String.valueOf(newAmount) +
-				" where username = '" + username + "';") == 0);
-			retval = false;
-
-		con.close();
-		return retval;
+	public Boolean depositUserCredit(String username, Integer newAmount) {
+		try {
+			Boolean retval = true;
+			Connection con = JDBCUtil.getConnection();
+			Statement st = con.createStatement();
+			
+			if (st.executeUpdate("update user set credit = credit + " + String.valueOf(newAmount) +
+					" where username = '" + username + "';") == 0);
+				retval = false;
+	
+			con.close();
+			return retval;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	public Map<Role,Boolean> getUserRolesMap(String username) throws SQLException {
