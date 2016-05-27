@@ -1,6 +1,7 @@
 package ir.stocks.data;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -30,29 +31,33 @@ public class OrderRepo {
 	
 	public void create(Order target) throws SQLException {
 		Connection con = JDBCUtil.getConnection();
-		Statement st = con.createStatement();
 		
 		Integer id = generateID();
 		target.setId(id);
 		
-		st.executeUpdate("insert into order values (" +
-				id + "','" +
-				target.getOwner() + ",'" +
-				target.getInstrument() + "'," +  
-				target.getPrice() + "," +
-				target.getQuantity() + ",'" +
-				target.getCommand().toString() + "','" +
-				target.getStatus().toString() +"');");
+		
+		PreparedStatement st = null;
+		st = con.prepareStatement("INSERT INTO order values (?, ? ,? ,? ,? ,? ,?)");
+		st.setLong(1, id);
+		st.setString(2, target.getOwner());
+		st.setString(3, target.getInstrument());
+		st.setLong(4, target.getPrice());
+		st.setLong(5, target.getQuantity());
+		st.setString(6, target.getCommand().toString());
+		st.setString(7, target.getStatus().toString());
+		st.executeUpdate();
 		
 		con.close();
 	}
 	
 	public void delete(Order target) {
+		String orderId = String.valueOf(target.getId());
+		String query = "delete from order where orderid = ? ;";
 		try {
-			Connection con = JDBCUtil.getConnection();
-			Statement st = con.createStatement();
-			
-			st.executeUpdate("delete from order where orderid = " + String.valueOf(target.getId()) + ";");
+			Connection con = JDBCUtil.getConnection();			
+			PreparedStatement pstmt = con.prepareStatement( query );
+			pstmt.setString( 1, orderId); 
+			ResultSet rs = pstmt.executeQuery( );
 			
 			con.close();
 		} catch (SQLException e) {
@@ -81,11 +86,12 @@ public class OrderRepo {
 		}
 		
 		try {
+			String query = "select * from order where symbolid = ? and command = ? ;";
 			Connection con = JDBCUtil.getConnection();
-			Statement st = con.createStatement();
-			
-			ResultSet rs = st.executeQuery("select * from order where symbolid = '" + sym + "' and command = '" + cmd.toString() + "';");
-			
+			PreparedStatement pstmt = con.prepareStatement( query );
+			pstmt.setString( 1, sym); 
+			pstmt.setString( 2, cmd.toString()); 
+			ResultSet rs = pstmt.executeQuery( );
 			con.close();
 			
 			while(rs.next()) {
