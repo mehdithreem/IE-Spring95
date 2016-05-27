@@ -11,6 +11,7 @@ import java.util.Queue;
 
 import ir.stocks.domain.Order;
 import ir.stocks.domain.OrderCommand;
+import ir.stocks.domain.Status;
 
 public class OrderRepo {
 	private static OrderRepo repo = null;
@@ -95,6 +96,7 @@ public class OrderRepo {
 						,rs.getInt("quantity")
 						,OrderCommand.valueOf(rs.getString("command")));
 				o.setId(rs.getInt("orderid"));
+				o.setStatus(Status.valueOf(rs.getString("status")));
 				q.offer(o);
 			}
 		} catch (SQLException e) {
