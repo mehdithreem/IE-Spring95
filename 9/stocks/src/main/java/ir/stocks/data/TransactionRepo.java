@@ -1,6 +1,7 @@
 package ir.stocks.data;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -26,19 +27,19 @@ public class TransactionRepo {
 	public void create(Transaction target){
 		try {
 			Connection con = JDBCUtil.getConnection();
-			Statement st = con.createStatement();
-			
+			PreparedStatement st = null;
 			Integer id = generateID();
 			target.setId(id);
 			
-			st.executeUpdate("insert into order values (" +
-					id + ",'" +
-					target.getBuyer() + "','" +
-					target.getSeller() + "','" +  
-					target.getSymbol() + "'," +
-					target.getPrice() + "," +
-					target.getQuantity() + ",'" +
-					target.getTime() +"');");
+			st = con.prepareStatement("insert into order values (?,?,?,?,?,?,?);");
+			st.setLong(1, id);
+			st.setString(2, target.getBuyer());
+			st.setString(3, target.getSeller());
+			st.setString(4, target.getSymbol());
+			st.setLong(5, target.getPrice());
+			st.setLong(6, target.getQuantity());
+			st.setString(7, target.getTime());
+			st.executeQuery();
 			
 			con.close();
 		} catch (SQLException e) {
