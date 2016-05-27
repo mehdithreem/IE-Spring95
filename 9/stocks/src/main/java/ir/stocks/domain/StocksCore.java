@@ -36,8 +36,8 @@ public class StocksCore {
 		return csvWriter.toString();
 	}
 
-	public Symbol addSymbol(String id) {
-		Symbol newSym = new Symbol(id);
+	public Symbol addSymbol(String id , String usrid) {
+		Symbol newSym = new Symbol(id , usrid);
 		symbols.put(id, newSym);
 		return newSym;
 	}

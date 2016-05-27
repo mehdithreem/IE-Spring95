@@ -35,7 +35,7 @@ public class Create extends Controller {
 			ShareRepo.getRepository().create(
 					new Share(	
 							(User) request.getAttribute("user"), 
-							new Symbol((String)request.getAttribute("symbolid")),
+							new Symbol((String)request.getAttribute("symbolid"),((User)request.getAttribute("user")).getUsername()),
 							Integer.valueOf(request.getParameter("quantity"))
 							)
 			);
@@ -48,7 +48,7 @@ public class Create extends Controller {
 			OrderRepo.getRepository().create(
 					new Order(	
 							(User) request.getAttribute("user"),
-							new Symbol((String)request.getAttribute("symbolid")),
+							new Symbol((String)request.getAttribute("symbolid"), ((User) request.getAttribute("user")).getUsername() ),
 							Integer.valueOf(request.getParameter("price")),
 							Integer.valueOf(request.getParameter("quantity")),
 							"BUY"

@@ -33,7 +33,6 @@ public class OrderRepo {
 				target.getPrice() + "','" +
 				target.getQuantity() + "','" +
 				"GTC" + "','" + 
-				Status.PENDING + "','" +
 				'1' + ");"
 				);
 		

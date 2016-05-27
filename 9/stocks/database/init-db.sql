@@ -19,6 +19,7 @@ create table user_roles (
 );
 
 	create table symbol (
+	 	ownerid integer not null,
 		id varchar(10) not null,
 		status varchar(10),
 		primary key (id)
@@ -42,7 +43,6 @@ create table user_roles (
 -- 	price integer not null,
 -- 	quantity integer not null,
 -- 	type varchar(3) not null,
--- 	status tinyint not null,
 -- 	command bit not null,
 -- 	constraint userid_fk foreign key(userid)
 -- 	references user(userid),
