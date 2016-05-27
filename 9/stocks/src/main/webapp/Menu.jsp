@@ -28,6 +28,20 @@
   </a>
   <% } %>
   
+  <% if (user != null && role != null && (role.get(Role.COMPANY) || role.get(Role.ADMIN))) { %>
+  <a class="item" id="menu-symbol-manager" href="<c:url value="/symbolmanager" />">
+    <i class="copyright icon"></i>
+    نمادها
+  </a>
+  <% } %>
+  
+  <% if (user != null && role != null && (role.get(Role.FINANCE) || role.get(Role.ADMIN) || role.get(Role.MEMBER))) { %>
+  <a class="item" id="menu-order-manager" href="<c:url value="/ordermanager" />">
+    <i class="shop icon"></i>
+    خرید و فروش
+  </a>
+  <% } %>
+  
   <% if (user != null && role != null && (role.get(Role.ADMIN))) { %>
   <a class="item" id="menu-user-manager" href="<c:url value="/usermanager" />">
     <i class="users icon"></i>

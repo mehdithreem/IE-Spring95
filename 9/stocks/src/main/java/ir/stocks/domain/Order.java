@@ -1,10 +1,10 @@
 package ir.stocks.domain;
 
-import java.io.*;
 import java.util.Queue;
 
 import ir.stocks.data.OrderRepo;
 import ir.stocks.data.ShareRepo;
+import ir.stocks.data.TransactionRepo;
 import ir.stocks.data.UserRepo;
 
 public class Order {
@@ -81,9 +81,6 @@ public class Order {
 
 
 	private void accept() {
-//		status = OrderStatus.ACCEPTED;
-//		owner.acceptOrder(this);
-
 		if (command.equals(OrderCommand.BUY)) {
 			ShareRepo.getRepository().addShare(owner, instrument, quantity);
 		} else if (command.equals(OrderCommand.SELL)) {
@@ -107,34 +104,32 @@ public class Order {
 			accept();
 			forSell.accept();
 			retCode = 0;
-			printSoldMessage(out, forSell.owner, quantity, instrument, price, owner);
-
+			
+			TransactionRepo.getRepository().create(new Transaction(owner, forSell.owner, instrument, quantity, price));
 		} else if (quantity > forSell.quantity) {
 
-//			owner.addShare(instrument, forSell.quantity);
+			ShareRepo.getRepository().addShare(owner, instrument, forSell.quantity);
 			quantity -= forSell.quantity;
+			OrderRepo.getRepository().updateQuantity(this);
 
 			forSell.price = price;
 			forSell.accept();
 			retCode = 1;
-			printSoldMessage(out, forSell.owner, forSell.quantity, instrument, price, owner);
+			TransactionRepo.getRepository().create(new Transaction(owner, forSell.owner, instrument, forSell.quantity, price));
 
 		} else if (quantity < forSell.quantity) {
 
-			forSell.owner.deposit(quantity*price);
-//			forSell.owner.decShare(instrument, quantity);
+			UserRepo.getRepository().depositUserCredit(forSell.owner, quantity*price);
+			ShareRepo.getRepository().addShare(forSell.owner, instrument, -quantity);
 			forSell.quantity -= quantity;
+			OrderRepo.getRepository().updateQuantity(forSell);
 
 			accept();
 			retCode = 2;
-			printSoldMessage(out, forSell.owner, quantity, instrument, price, owner);
+			TransactionRepo.getRepository().create(new Transaction(owner, forSell.owner, instrument, quantity, price));
 		}
 
 		return retCode;
-	}
-
-	private void printSoldMessage(PrintWriter out, User seller, Integer quantity, String symb, Integer price, User buyer) {
-
 	}
 
 	public Boolean Exchange() {

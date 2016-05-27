@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import ir.stocks.data.UserRepo;
 import ir.stocks.domain.User;
 
-@WebServlet("/signUp")
+@WebServlet("/app/signUp")
 public class SignUp extends Controller {
 	private static final long serialVersionUID = 1464486337788353668L;
 

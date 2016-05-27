@@ -1,17 +1,15 @@
 package ir.stocks.controller.symbol;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ir.stocks.controller.Controller;
-import ir.stocks.data.SymbolRepo;
+import ir.stocks.data.SymbolRequestRepo;
 
-@WebServlet("/app/company/reject-symbol")
+@WebServlet("/app/company/symbol/reject")
 public class Reject extends Controller {
 	private static final long serialVersionUID = -3852860741808017598L;
 
@@ -22,10 +20,8 @@ public class Reject extends Controller {
 			return;
 		}
 			
-		try {
-			SymbolRepo.getInstance().rejectRequest((String)request.getParameter("symbolid"));
-		}  catch (SQLException e) {
-			response.setStatus(406);
-		}
+		SymbolRequestRepo.getRepository().rejectRequest(request.getParameter("symbolid"));
+		
+		request.getRequestDispatcher("/app/symbolmanager").forward(request, response);
 	}
 }

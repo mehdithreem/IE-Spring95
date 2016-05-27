@@ -39,6 +39,14 @@
   <servlet-name>user-manager</servlet-name>
   <jsp-file>/UserManager.jsp</jsp-file>
  </servlet>
+ <servlet>
+  <servlet-name>symbol-manager</servlet-name>
+  <jsp-file>/SymbolManager.jsp</jsp-file>
+ </servlet>
+ <servlet>
+  <servlet-name>order-manager</servlet-name>
+  <jsp-file>/OrderManager.jsp</jsp-file>
+ </servlet>
  <servlet-mapping>
   <servlet-name>index-jsp</servlet-name>
   <url-pattern>/app/</url-pattern>
@@ -66,6 +74,14 @@
  <servlet-mapping>
   <servlet-name>user-manager</servlet-name>
   <url-pattern>/app/usermanager</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>symbol-manager</servlet-name>
+  <url-pattern>/app/symbolmanager</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>order-manager</servlet-name>
+  <url-pattern>/app/ordermanager</url-pattern>
  </servlet-mapping>
  <mime-mapping>
   <extension>css</extension>

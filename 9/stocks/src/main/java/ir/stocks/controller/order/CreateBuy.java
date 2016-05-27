@@ -15,9 +15,9 @@ import ir.stocks.domain.OrderCommand;
 import ir.stocks.domain.Status;
 import ir.stocks.domain.User;
 
-@WebServlet("/app/user/order/sell")
-public class CreateSell extends Controller {
-	private static final long serialVersionUID = 6780086471904829072L;
+@WebServlet("/app/user/order/buy")
+public class CreateBuy extends Controller {
+	private static final long serialVersionUID = 1153512583903604196L;
 
 	@Override
 	protected void myDoPost(HttpServletRequest request, HttpServletResponse response)
@@ -41,9 +41,8 @@ public class CreateSell extends Controller {
 		
 		User user = (User) request.getAttribute("user");
 		
-		//sell
-		if (!user.hasEnoughShare(request.getParameter("instrument"), quantity)) {
-			request.setAttribute("error", "not-enough-share");
+		if (user.getCredit() < price * quantity) {
+			request.setAttribute("error", "not-enough-money");
 		} else {
 			try {
 				Order ord = new Order(user.getUsername()
