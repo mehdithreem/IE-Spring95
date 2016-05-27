@@ -18,19 +18,22 @@ public class SymbolRepo {
 	}
 
 	public boolean create(Symbol target) throws SQLException {
+	
 		Connection con = JDBCUtil.getConnection();
-		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("select id from symbol where id = " + String.valueOf(target.getID()));
+		PreparedStatement pstmt = con.prepareStatement( "select id from symbol where id = ?" );
+		pstmt.setString( 1, target.getID()); 
+		ResultSet rs = pstmt.executeQuery( );
 
 		if (rs.next()) {
 			con.close();
 			return false;
 		}
 
-		st.executeUpdate("insert into symbol values (" +
-			String.valueOf(target.getOwnerid()) + ",'" +
-			target.getId() +"');"
-			);
+		PreparedStatement st = null;
+		st = con.prepareStatement("INSERT INTO order values (?, ?)");
+		st.setString(1, String.valueOf(target.getOwnerid()));
+		st.setString(2, target.getId());
+		st.executeUpdate();
 		
 		con.close();
 		return true;
@@ -38,14 +41,18 @@ public class SymbolRepo {
 
 	public void rejectRequest(String symbolid) throws SQLException {
 		Connection con = JDBCUtil.getConnection();
-		Statement st = con.createStatement();
-		st.executeUpdate("update symbol set status = status + " + "REJECT" + " where id = '" + symbolid + "';");
+		PreparedStatement pstmt = con.prepareStatement( "update symbol set status = status REJECT where id = ?; " );
+		pstmt.setString(1, symbolid);
+		ResultSet rs = pstmt.executeQuery( );
+		con.close();
 	}
 	
 	public void acceptRequest(String symbolid) throws SQLException {
 		Connection con = JDBCUtil.getConnection();
-		Statement st = con.createStatement();
-		st.executeUpdate("update symbol set status = status + " + "ACCEPT" + " where id = '" + symbolid + "';");
+		PreparedStatement pstmt = con.prepareStatement( "update symbol set status = status ACCEPT where id = ?; " );
+		pstmt.setString(1, symbolid);
+		ResultSet rs = pstmt.executeQuery( );
+		con.close();
 	}
 
 }
