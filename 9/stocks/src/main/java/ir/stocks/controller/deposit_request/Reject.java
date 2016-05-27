@@ -22,7 +22,7 @@ public class Reject extends Controller {
 		}
 		Integer reqid = null;
 		try {
-			Integer.valueOf((String) request.getParameter("reqid"));
+			reqid = Integer.valueOf((String) request.getParameter("reqid"));
 		} catch (NumberFormatException e) {
 			response.setStatus(400);
 			return;
@@ -33,5 +33,7 @@ public class Reject extends Controller {
 		}  catch (SQLException e) {
 			response.setStatus(406);
 		}
+		
+		request.getRequestDispatcher("/app/credit").forward(request, response);
 	}
 }

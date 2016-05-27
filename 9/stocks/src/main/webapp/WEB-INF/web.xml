@@ -35,6 +35,10 @@
   <servlet-name>deposit-user-manager</servlet-name>
   <jsp-file>/DepositUserManager.jsp</jsp-file>
  </servlet>
+ <servlet>
+  <servlet-name>user-manager</servlet-name>
+  <jsp-file>/UserManager.jsp</jsp-file>
+ </servlet>
  <servlet-mapping>
   <servlet-name>index-jsp</servlet-name>
   <url-pattern>/app/</url-pattern>
@@ -58,6 +62,10 @@
  <servlet-mapping>
   <servlet-name>deposit-user-manager</servlet-name>
   <url-pattern>/app/credit</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>user-manager</servlet-name>
+  <url-pattern>/app/usermanager</url-pattern>
  </servlet-mapping>
  <mime-mapping>
   <extension>css</extension>
@@ -89,7 +97,7 @@
  </error-page>
  <security-constraint>
   <web-resource-collection>
-   <web-resource-name>user-actions</web-resource-name>
+   <web-resource-name>force-login</web-resource-name>
    <url-pattern>/forcelogin</url-pattern>
   </web-resource-collection>
   <auth-constraint>
@@ -117,6 +125,27 @@
   <auth-constraint>
    <role-name>finance</role-name>
    <role-name>admin</role-name>
+  </auth-constraint>
+ </security-constraint>
+ <security-constraint>
+  <display-name>security-constraint</display-name>
+  <web-resource-collection>
+   <web-resource-name>admin-actions</web-resource-name>
+   <url-pattern>/admin/*</url-pattern>
+  </web-resource-collection>
+  <auth-constraint>
+   <role-name>admin</role-name>
+  </auth-constraint>
+ </security-constraint>
+ <security-constraint>
+  <display-name>security-constraint</display-name>
+  <web-resource-collection>
+   <web-resource-name>company-actions</web-resource-name>
+   <url-pattern>/company/*</url-pattern>
+  </web-resource-collection>
+  <auth-constraint>
+   <role-name>admin</role-name>
+   <role-name>company</role-name>
   </auth-constraint>
  </security-constraint>
  <login-config>

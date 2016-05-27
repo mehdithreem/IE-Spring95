@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import ir.stocks.controller.Controller;
 import ir.stocks.data.DepositRequestRepo;
 import ir.stocks.domain.DepositRequest;
+import ir.stocks.domain.User;
 
 @WebServlet("/app/user/deposit")
 public class Create extends Controller {
@@ -27,13 +28,18 @@ public class Create extends Controller {
 			return;
 		}
 
+		User target = (User) request.getAttribute("user");
+		System.out.println("deposit req: " + target.getUsername());
 		if (!DepositRequestRepo.getRepository().create(
 				new DepositRequest(
-						(String) request.getSession().getAttribute("user")
-						, Integer.valueOf((String) request.getAttribute("amount"))
+						target.getUsername()
+						, Integer.valueOf((String) request.getParameter("amount"))
 						)
 			)) {
 			response.setStatus(406);
 		}
+		
+		request.setAttribute("message", "success");
+		request.getRequestDispatcher("/app/credit").forward(request, response);
 	}	
 }

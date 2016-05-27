@@ -1,5 +1,6 @@
 drop table user if exists;
 drop table user_roles if exists;
+drop table deposit_user if exists;
 
 create table user (
 	username varchar(20) not null,
@@ -15,15 +16,24 @@ create table user_roles (
 	username varchar(20) not null,
 	role varchar(20),
 	constraint username_fk foreign key(username)
-	references user(username)
+	references user(username) ON DELETE CASCADE
 );
 
-	create table symbol (
-	 	ownerid integer not null,
-		id varchar(10) not null,
-		status varchar(10),
-		primary key (id)
-	);
+-- create table deposit_user (
+-- 	reqid integer not null,
+-- 	username varchar(20) not null,
+-- 	status varchar(10) not null,
+-- 	amount integer not null,
+-- 	constraint username_fk foreign key(username)
+-- 	references user(username) ON DELETE CASCADE
+-- )
+
+create table symbol (
+ 	ownerid integer not null,
+	id varchar(10) not null,
+	status varchar(10),
+	primary key (id)
+);
 	
 -- create table share (
 -- 	userid integer not null,
@@ -37,7 +47,7 @@ create table user_roles (
 -- );
 
 -- create table order (
-	orderid integer not null,
+-- orderid integer not null,
 -- 	ownerid integer not null,
 -- 	symbolid varchar(10) not null,
 -- 	price integer not null,

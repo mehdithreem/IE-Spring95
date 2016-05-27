@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import ir.stocks.controller.Controller;
 import ir.stocks.data.DepositRequestRepo;
 
-@WebServlet("/app/manager/deposit/accept")
+@WebServlet("/app/finance/deposit/accept")
 public class Accept extends Controller {
 	private static final long serialVersionUID = 7360908586501934710L;
 	
@@ -22,7 +22,7 @@ public class Accept extends Controller {
 		}
 		Integer reqid = null;
 		try {
-			Integer.valueOf((String) request.getParameter("reqid"));
+			reqid = Integer.valueOf((String) request.getParameter("reqid"));
 		} catch (NumberFormatException e) {
 			response.setStatus(400);
 			return;
@@ -33,5 +33,7 @@ public class Accept extends Controller {
 		}  catch (SQLException e) {
 			response.setStatus(406);
 		}
+		
+		request.getRequestDispatcher("/app/credit").forward(request, response);
 	}	
 }

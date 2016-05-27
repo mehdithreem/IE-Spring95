@@ -28,6 +28,13 @@
   </a>
   <% } %>
   
+  <% if (user != null && role != null && (role.get(Role.ADMIN))) { %>
+  <a class="item" id="menu-user-manager" href="<c:url value="/usermanager" />">
+    <i class="users icon"></i>
+    مدیریت کاربران
+  </a>
+  <% } %>
+  
   <div class="left menu">
   <% if (user == null) {%>
     <a class="item" style="background-color: red; color :white;" href="<c:url value='/forcelogin'/>">

@@ -1,7 +1,9 @@
 package ir.stocks.data;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ir.stocks.domain.DepositRequest;
@@ -18,7 +20,7 @@ public class DepositRequestRepo {
 	}
 	
 	private static Map<Integer, DepositRequest> repomap = new HashMap<Integer, DepositRequest>();
-	private static Integer idgen = 0;
+	private Integer idgen = 0;
 	
 	private Integer generateID() {
 		return idgen++;
@@ -34,10 +36,12 @@ public class DepositRequestRepo {
 	}
 	
 	public void acceptRequest(Integer reqId) throws SQLException {
+		System.out.println("Accept request " + String.valueOf(reqId));
 		DepositRequest r = repomap.get(reqId);
 		if (r == null)
 			return;
 		
+		System.out.println("Accepted");
 		r.setStatus(Status.ACCEPTED);
 		UserRepo.getRepository().updateUserCredit(r.getId(), r.getAmount());
 	}
@@ -48,5 +52,19 @@ public class DepositRequestRepo {
 			return;
 		
 		r.setStatus(Status.REJECTED);
+	}
+	
+	public List<DepositRequest> getAll() {
+		List<DepositRequest> ret = new ArrayList<DepositRequest>();
+		ret.addAll(repomap.values());
+		return ret;
+	}
+	
+	public List<DepositRequest> getAll(String username) {
+		List<DepositRequest> lst = new ArrayList<DepositRequest>();
+		for(DepositRequest r : repomap.values())
+			if(r.getId().equals(username))
+				lst.add(r);
+		return lst;
 	}
 }

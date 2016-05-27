@@ -100,5 +100,38 @@ public class UserRepo {
 		con.close();
 		return ret;
 	}
+	
+	public void setUserRoles(String username, List<Role> roles) throws SQLException {
+		Connection con = JDBCUtil.getConnection();
+		Statement st = con.createStatement();
+		
+		st.executeUpdate("delete from user_roles where username='" + username + "'");
+		
+		for(Role r : roles) {
+			st.executeUpdate("insert into user_roles values('" + username + "','" + r.toString().toLowerCase() + "');");
+		}
+		
+		con.close();
+	}
+	
+	public List<User> getAll()  throws SQLException {
+		List<User> ret = new ArrayList<User>();
+		
+		Connection con = JDBCUtil.getConnection();
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery("select * from user");
+		while (rs.next()) {
+			User newUser = new User(
+					rs.getString("username"),
+					rs.getString("password"),
+					rs.getString("name"),
+					rs.getString("lastName"),
+					rs.getString("email"));
+			newUser.setCredit(rs.getInt("credit"));
+			ret.add(newUser);
+		}
+			
+		return ret;
+	}
 
 }
