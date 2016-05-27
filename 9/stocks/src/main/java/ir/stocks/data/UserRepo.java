@@ -21,23 +21,21 @@ public class UserRepo {
 
 	public void create(User target) throws SQLException {
 		Connection con = JDBCUtil.getConnection();
-		Statement st = con.createStatement();
+		PreparedStatement st = null;
+		st = con.prepareStatement("INSERT INTO user values (?, ? ,? ,? ,? ,? )");
+		st.setString(1, target.getUsername());
+		st.setString(2, target.getPassword());
+		st.setString(3, target.getName());
+		st.setString(4, target.getLastName());
+		st.setString(5, target.getEmail());
+		st.setString(6, String.valueOf(target.getCredit()));
+		st.executeUpdate();
 		
-		String exeStr = "insert into user values ('" +
-				target.getUsername() + "','" +
-				target.getPassword() + "','" +
-				target.getName() + "','" +
-				target.getLastName() + "','" +
-				target.getEmail() + "'," +
-				String.valueOf(target.getCredit()) + ");";
-		System.out.println(exeStr);	
-		st.executeUpdate(exeStr);
 		
-		exeStr = "insert into user_roles values ('" +
-				target.getUsername() + "','" +
-				Role.MEMBER.toString().toLowerCase() + "');";
-		System.out.println(exeStr);	
-		st.executeUpdate(exeStr);
+		st = con.prepareStatement("INSERT INTO user_roles values (?, ? )");
+		st.setString(1, target.getUsername());
+		st.setString(2, Role.MEMBER.toString().toLowerCase());
+		st.executeUpdate();
 		
 		con.close();
 	}
@@ -45,8 +43,10 @@ public class UserRepo {
 	public User findByUsername(String username) throws SQLException {
 		User retval = null;
 		Connection con = JDBCUtil.getConnection();
-		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("select * from user where username='" + username + "'");
+		PreparedStatement pstmt = con.prepareStatement( "select * from user where username= ? ;" );
+		pstmt.setString(1, username);
+		ResultSet rs = pstmt.executeQuery( );
+		
 		if (rs.next()) {
 			User fin = new User(username,
 					rs.getString("password"),
@@ -65,10 +65,11 @@ public class UserRepo {
 		try {
 			Boolean retval = true;
 			Connection con = JDBCUtil.getConnection();
-			Statement st = con.createStatement();
+			PreparedStatement pstmt = con.prepareStatement( "update user set credit = credit + ? where username = ? ;" );
+			pstmt.setString(1, String.valueOf(newAmount));
+			pstmt.setString(2, username );
 			
-			if (st.executeUpdate("update user set credit = credit + " + String.valueOf(newAmount) +
-					" where username = '" + username + "';") == 0);
+			if (pstmt.executeUpdate() == 0);
 				retval = false;
 	
 			con.close();
@@ -96,8 +97,10 @@ public class UserRepo {
 		Connection con = JDBCUtil.getConnection();
 		Statement st = con.createStatement();
 		
-		List<Role> ret = new ArrayList<Role>();		
-		ResultSet rs = st.executeQuery("select role from user_roles where username='" + username + "'");
+		List<Role> ret = new ArrayList<Role>();
+		PreparedStatement pstmt = con.prepareStatement("select role from user_roles where username= ? ;");
+		pstmt.setString(1, username);
+		ResultSet rs = pstmt.executeQuery( );
 		while (rs.next()) {
 			ret.add(Role.valueOf(rs.getString(1).toUpperCase()));
 		}
@@ -108,12 +111,15 @@ public class UserRepo {
 	
 	public void setUserRoles(String username, List<Role> roles) throws SQLException {
 		Connection con = JDBCUtil.getConnection();
-		Statement st = con.createStatement();
-		
-		st.executeUpdate("delete from user_roles where username='" + username + "'");
+		PreparedStatement pstmt = con.prepareStatement("delete from user_roles where username= ? ;");
+		pstmt.setString(1, username);
+		pstmt.executeQuery( );
 		
 		for(Role r : roles) {
-			st.executeUpdate("insert into user_roles values('" + username + "','" + r.toString().toLowerCase() + "');");
+			pstmt = con.prepareStatement("insert into user_roles values(?, ?);");
+			pstmt.setString(1, username);
+			pstmt.setString(2, r.toString().toLowerCase());
+			pstmt.executeUpdate();
 		}
 		
 		con.close();
