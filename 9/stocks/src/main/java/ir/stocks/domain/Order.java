@@ -3,23 +3,22 @@ package ir.stocks.domain;
 import java.io.*;
 
 public class Order {
-	private User owner;
-	private Symbol instrument;
+	private String owner;
+	private String instrument;
 	private Integer price;
 	private Integer quantity;
-	private OrderType type;
-	private String command;
+	private OrderCommand command;
+	private Integer id;
 
-	public Order(User _owner
-			,Symbol _instrument
+	public Order(String _owner
+			,String _instrument
 			,Integer _price
 			,Integer _quantity
-			,String _command) {
+			,OrderCommand _command) {
 		owner = _owner;
 		instrument = _instrument;
 		price = _price;
 		quantity = _quantity;
-		setType(new OrderType("GTC"));
 		command = _command;
 	}
 
@@ -27,7 +26,7 @@ public class Order {
 		return price;
 	}
 
-	public User getOwner() {
+	public String getOwner() {
 		return owner;
 	}
 	
@@ -39,9 +38,18 @@ public class Order {
 		return quantity;
 	}
 
-	public String getCommand() {
+	public OrderCommand getCommand() {
 		return command;
 	}
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 
 	private void accept() {
 //		status = OrderStatus.ACCEPTED;
@@ -55,11 +63,11 @@ public class Order {
 //		}
 	}
 
-	public Symbol getInstrument() {
+	public String getInstrument() {
 		return instrument;
 	}
 
-	protected Integer buy(Order forSell, PrintWriter out) {
+	protected Integer buy(Order forSell) {
 		Integer retCode = -1;
 		if (price < forSell.price) {
 			return retCode;
@@ -70,7 +78,7 @@ public class Order {
 			accept();
 			forSell.accept();
 			retCode = 0;
-			printSoldMessage(out, forSell.owner, quantity, instrument.getID(), price, owner);
+			printSoldMessage(out, forSell.owner, quantity, instrument, price, owner);
 
 		} else if (quantity > forSell.quantity) {
 
@@ -80,7 +88,7 @@ public class Order {
 			forSell.price = price;
 			forSell.accept();
 			retCode = 1;
-			printSoldMessage(out, forSell.owner, forSell.quantity, instrument.getID(), price, owner);
+			printSoldMessage(out, forSell.owner, forSell.quantity, instrument, price, owner);
 
 		} else if (quantity < forSell.quantity) {
 
@@ -90,7 +98,7 @@ public class Order {
 
 			accept();
 			retCode = 2;
-			printSoldMessage(out, forSell.owner, quantity, instrument.getID(), price, owner);
+			printSoldMessage(out, forSell.owner, quantity, instrument, price, owner);
 		}
 
 		return retCode;
@@ -125,22 +133,13 @@ public class Order {
 //		 StocksCore.getInstance().appendToWriter("\n");
 	}
 
-	public void Exchange(PrintWriter out) {
-		setStatus(OrderStatus.QUEUED);
-		Symbol symb = getInstrument();
-		if (getCommand().equals(OrderCommand.BUY)) {
-			symb.buyOffer(this);
-		}
-		else {
-			symb.sellOffer(this);
-		}
-
+	public void Exchange() {
 		Boolean exchangeHappened = false;
 		while(symb.sellQueueSize() > 0 && symb.buyQueueSize() > 0) {
 			Order currBuy = symb.buyPeek();
 			Order currSell = symb.sellPeek();
 			
-			Integer result = currBuy.buy(currSell, out);
+			Integer result = currBuy.buy(currSell);
 			
 			if (result == -1) break;
 
@@ -157,18 +156,6 @@ public class Order {
 				symb.buyRemove(currBuy);
 			}
 		}
-
-		if (!exchangeHappened)
-			out.println("Order is queued");
 	}
-
-	public OrderType getType() {
-		return type;
-	}
-
-	public void setType(OrderType type) {
-		this.type = type;
-	}
-	
 	
 }
