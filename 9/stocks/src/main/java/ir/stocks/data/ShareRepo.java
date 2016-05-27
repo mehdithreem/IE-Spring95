@@ -1,6 +1,7 @@
 package ir.stocks.data;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -19,13 +20,13 @@ public class ShareRepo {
 	
 	public void create(Share target) throws SQLException {
 		Connection con = JDBCUtil.getConnection();
-		Statement st = con.createStatement();
-
-		st.executeUpdate("insert into share values ('" +
-				target.getOwner() + "','" +
-				target.getSymbol() + "'," +
-				target.getQuantity() + ");"
-				);
+		
+		PreparedStatement st = null;
+		st = con.prepareStatement("INSERT INTO share values (?, ? ,? )");
+		st.setString(1, target.getOwner());
+		st.setString(2, target.getSymbol());
+		st.setLong(3, target.getQuantity());
+		st.executeUpdate();
 		
 		con.close();
 	}
@@ -33,11 +34,11 @@ public class ShareRepo {
 	public Share getShare(String username, String sym) throws SQLException {
 		Share ret = null;
 		Connection con = JDBCUtil.getConnection();
-		Statement st = con.createStatement();
+		PreparedStatement pstmt = con.prepareStatement( "select * from share where symbolid = ? and userid = ? ;");
+		pstmt.setString(1, sym);
+		pstmt.setString(2, username);
+		ResultSet rs = pstmt.executeQuery( );
 		
-		ResultSet rs = st.executeQuery("select * from share where symbolid = '" + sym + 
-				"' and userid = '" + username + "'");
-
 		con.close();
 		if (rs.next()) {
 			ret = new Share(
@@ -53,20 +54,25 @@ public class ShareRepo {
 	public void addShare(String username, String sym, Integer count) {
 		try {
 			Connection con = JDBCUtil.getConnection();
-			Statement st = con.createStatement();
+			PreparedStatement pstmt = con.prepareStatement( "update share set quantity = quantity + ? where symbolid = ? and userid = ? ;");
+			pstmt.setString(1, String.valueOf(count));
+			pstmt.setString(2, sym);
+			pstmt.setString(3, username);
 			
-			if (st.executeUpdate("update share set quantity = quantity + " +
-					String.valueOf(count) + " where symbolid = '" + sym + 
-					"' and userid = '" + username + "';") < 1) {
+			
+			if (pstmt.executeUpdate() < 1) {
 				
-				st.executeUpdate("insert into share values ('" +
-						username + "','" +
-						sym + "'," +
-						String.valueOf(count) + ");"
-						);
-			};
+				PreparedStatement pstmt2 = con.prepareStatement( "insert into share values ( ?, ?, ? );");
+				pstmt2.setString(1, username);
+				pstmt2.setString(2, sym);
+				pstmt2.setString(3, String.valueOf(count));
+				pstmt2.executeUpdate();
+			
+			}
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 	}
 }
