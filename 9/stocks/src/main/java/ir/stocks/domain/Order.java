@@ -1,6 +1,11 @@
 package ir.stocks.domain;
 
 import java.io.*;
+import java.util.Queue;
+
+import ir.stocks.data.OrderRepo;
+import ir.stocks.data.ShareRepo;
+import ir.stocks.data.UserRepo;
 
 public class Order {
 	private String owner;
@@ -8,7 +13,10 @@ public class Order {
 	private Integer price;
 	private Integer quantity;
 	private OrderCommand command;
+	private Status status;
 	private Integer id;
+	
+	private static Integer max = 500;
 
 	public Order(String _owner
 			,String _instrument
@@ -20,8 +28,29 @@ public class Order {
 		price = _price;
 		quantity = _quantity;
 		command = _command;
+		
+		if (price > max)
+			status = Status.PENDING;
+		else
+			status = Status.ACCEPTED;
+	}
+	
+	public static Integer getMax() {
+		return max;
 	}
 
+	public static void setMax(Integer max) {
+		Order.max = max;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	
 	public Integer getPrice() {
 		return price;
 	}
@@ -54,13 +83,13 @@ public class Order {
 	private void accept() {
 //		status = OrderStatus.ACCEPTED;
 //		owner.acceptOrder(this);
-//
-//		if (command.equals(String.BUY)) {
-//			owner.addShare(instrument, quantity);
-//		} else if (command.equals(String.SELL)) {
-//			owner.deposit(quantity*price);
-//			owner.decShare(instrument, quantity);
-//		}
+
+		if (command.equals(OrderCommand.BUY)) {
+			ShareRepo.getRepository().addShare(owner, instrument, quantity);
+		} else if (command.equals(OrderCommand.SELL)) {
+			UserRepo.getRepository().depositUserCredit(owner, quantity*price);
+			ShareRepo.getRepository().addShare(owner, instrument, -quantity);
+		}
 	}
 
 	public String getInstrument() {
@@ -105,99 +134,43 @@ public class Order {
 	}
 
 	private void printSoldMessage(PrintWriter out, User seller, Integer quantity, String symb, Integer price, User buyer) {
-//		Integer sellerID = seller.getID();
-//		Integer buyerID = buyer.getID();
-//		out.println( String.valueOf(sellerID) 
-//			+ " sold " + String.valueOf(quantity) 
-//			+ " shares of " + symb 
-//			+ " @" + String.valueOf(price)
-//			+ " to " + String.valueOf(buyerID));
-//		System.out.println( String.valueOf(sellerID) 
-//			+ " sold " + String.valueOf(quantity) 
-//			+ " shares of " + symb 
-//			+ " @" + String.valueOf(price)
-//			+ " to " + String.valueOf(buyerID));
-//		 StocksCore.getInstance().appendToWriter(String.valueOf(buyerID));
-//		 StocksCore.getInstance().appendToWriter(",");
-//		 StocksCore.getInstance().appendToWriter(String.valueOf(sellerID));
-//		 StocksCore.getInstance().appendToWriter(",");
-//		 StocksCore.getInstance().appendToWriter(symb);
-//		 StocksCore.getInstance().appendToWriter(",");
-//		 StocksCore.getInstance().appendToWriter(type.toString());
-//		 StocksCore.getInstance().appendToWriter(",");
-//		 StocksCore.getInstance().appendToWriter(String.valueOf(quantity));
-//		 StocksCore.getInstance().appendToWriter(",");
-//		 StocksCore.getInstance().appendToWriter(String.valueOf(buyer.getCredit()));
-//		 StocksCore.getInstance().appendToWriter(",");
-//		 StocksCore.getInstance().appendToWriter(String.valueOf(seller.getCredit()));
-//		 StocksCore.getInstance().appendToWriter("\n");
+
 	}
 
-<<<<<<< HEAD
-	public void Exchange() {
-		Boolean exchangeHappened = false;
-		while(symb.sellQueueSize() > 0 && symb.buyQueueSize() > 0) {
-			Order currBuy = symb.buyPeek();
-			Order currSell = symb.sellPeek();
+	public Boolean Exchange() {
+		OrderRepo orepo = OrderRepo.getRepository();
+		Queue<Order> sell = OrderRepo.getRepository().getSymbolQueue(instrument, OrderCommand.SELL);
+		Queue<Order> buy = OrderRepo.getRepository().getSymbolQueue(instrument, OrderCommand.BUY);
+		
+		if (sell == null || buy == null)
+			return false;
+		
+		while(sell.size() > 0 && buy.size() > 0) {
+			Order currBuy = sell.peek();
+			Order currSell = buy.peek();
 			
 			Integer result = currBuy.buy(currSell);
 			
 			if (result == -1) break;
 
-			exchangeHappened = true;
 			if(result == 0) {
 				// exactly matched
-				symb.buyRemove(currBuy);
-				symb.sellRemove(currSell);
+				sell.remove(currSell);
+				orepo.delete(currSell);
+				buy.remove(currBuy);
+				orepo.delete(currBuy);
 			} else if (result == 1) {
 				// buy stays, sell consumed
-				symb.sellRemove(currSell);
+				sell.remove(currSell);
+				orepo.delete(currSell);
 			} else if (result == 2) {
 				// buy consumed, sell stays
-				symb.buyRemove(currBuy);
+				buy.remove(currBuy);
+				orepo.delete(currBuy);
 			}
 		}
-=======
-//	public void Exchange(PrintWriter out) {
-//		setStatus(OrderStatus.QUEUED);
-//		Symbol symb = getInstrument();
-//		if (getCommand().equals(OrderCommand.BUY)) {
-//			symb.buyOffer(this);
-//		}
-//		else {
-//			symb.sellOffer(this);
-//		}
-//
-//		Boolean exchangeHappened = false;
-//		while(symb.sellQueueSize() > 0 && symb.buyQueueSize() > 0) {
-//			Order currBuy = symb.buyPeek();
-//			Order currSell = symb.sellPeek();
-//			
-//			Integer result = currBuy.buy(currSell, out);
-//			
-//			if (result == -1) break;
-//
-//			exchangeHappened = true;
-//			if(result == 0) {
-//				// exactly matched
-//				symb.buyRemove(currBuy);
-//				symb.sellRemove(currSell);
-//			} else if (result == 1) {
-//				// buy stays, sell consumed
-//				symb.sellRemove(currSell);
-//			} else if (result == 2) {
-//				// buy consumed, sell stays
-//				symb.buyRemove(currBuy);
-//			}
-//		}
-//
-//		if (!exchangeHappened)
-//			out.println("Order is queued");
-//	}
-
-	public OrderType getType() {
-		return type;
->>>>>>> 22553fb4a20e660be5c02a8ba84f222f78df4934
+		
+		return true;
 	}
 	
 }

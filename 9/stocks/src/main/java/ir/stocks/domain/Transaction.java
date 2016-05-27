@@ -5,10 +5,8 @@ public class Transaction {
 	private User seller;
 	
 	private Symbol symbol;
-	private OrderType type;
 	private Integer quantity;
 	private Integer price;
 	
 	private Status status;
-	
 }

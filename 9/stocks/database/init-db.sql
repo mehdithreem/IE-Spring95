@@ -19,14 +19,14 @@ create table user_roles (
 	references user(username) ON DELETE CASCADE
 );
 
-create table deposit_user (
- 	reqid integer not null,
- 	username varchar(20) not null,
- 	status varchar(10) not null,
- 	amount integer not null,
- 	constraint username_fk foreign key(username)
- 	references user(username) ON DELETE CASCADE
-);
+-- create table deposit_user (
+--  	reqid integer not null,
+--  	username varchar(20) not null,
+--  	status varchar(10) not null,
+--  	amount integer not null,
+--  	constraint username_fk foreign key(username)
+--  	references user(username) ON DELETE CASCADE
+-- );
 
 create table symbol (
  	ownerid integer not null,
@@ -41,7 +41,7 @@ create table share (
  	quantity integer not null,
  	primary key (userid, symbolid),
  	constraint userid_fk foreign key(userid)
- 	references user(userid),
+ 	references user(userid) on delete casecade,
  	constraint symbolid_fk foreign key(symbolid)
  	references symbol(symbolid) on delete casecade
 );
@@ -52,12 +52,13 @@ create table order (
  	symbolid varchar(10) not null,
  	price integer not null,
  	quantity integer not null,
- 	type varchar(3) not null,
- 	command bit not null,
+ 	command varchar(10) not null,
+ 	status varchar(10) not null,
+ 	primary key (orderid),
  	constraint userid_fk foreign key(userid)
- 	references user(userid),
+ 	references user(userid) on delete casecade,
  	constraint symbolid_fk foreign key(symbolid)
- 	references symbol(symbolid)
+ 	references symbol(symbolid) on delete casecade
 );
 
 create table transaction (

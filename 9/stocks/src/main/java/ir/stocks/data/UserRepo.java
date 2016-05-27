@@ -61,7 +61,7 @@ public class UserRepo {
 		return retval;
 	}
 	
-	public Boolean updateUserCredit(String username, Integer newAmount) throws SQLException {
+	public Boolean depositUserCredit(String username, Integer newAmount) throws SQLException {
 		Boolean retval = true;
 		Connection con = JDBCUtil.getConnection();
 		Statement st = con.createStatement();

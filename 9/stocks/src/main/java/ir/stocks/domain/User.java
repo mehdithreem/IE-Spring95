@@ -1,5 +1,9 @@
 package ir.stocks.domain;
 
+import java.sql.SQLException;
+
+import ir.stocks.data.ShareRepo;
+
 public class User {
 	private String username;
 	private String password;
@@ -69,16 +73,21 @@ public class User {
 		return true;
 	}
 
-//	public Boolean hasEnoughShare(Symbol sym, Integer count) {
-//		Share shr = shares.get(sym.getID());
-//
-//		if (shr == null) return false;
-//
-//		if (shr.getQuantity() < count)
-//			return false;
-//
-//		return true;
-//	}
+	public Boolean hasEnoughShare(String sym, Integer count) {
+		Share shr;
+		try {
+			shr = ShareRepo.getRepository().getShare(username, sym);
+		} catch (SQLException e) {
+			return false;
+		}
+
+		if (shr == null) return false;
+
+		if (shr.getQuantity() < count)
+			return false;
+
+		return true;
+	}
 
 //	public void addShare(Symbol sym, Integer count) {
 //		Share shr = shares.get(sym.getID());

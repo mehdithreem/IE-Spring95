@@ -1,34 +1,26 @@
 package ir.stocks.domain;
 
 public class Share {
-	private Symbol symbol;
-	private User owner;
+	private String symbol;
+	private String owner;
 
 	private Integer quantity;
 
-	public Share(User _owner, Symbol _symbol, Integer _quantity){
+	public Share(String _owner, String _symbol, Integer _quantity){
 		symbol = _symbol;
 		owner = _owner;
 		quantity = _quantity;
 	}
 
-	public Symbol getSymbol(){
+	public String getSymbol() {
 		return symbol;
 	}
 
-	public void IncQuantity(Integer value) {
-		quantity += value;
-	}
-
-	public void DecQuantity(Integer value) {
-		quantity -= value;
+	public String getOwner() {
+		return owner;
 	}
 
 	public Integer getQuantity() {
 		return quantity;
-	}
-	
-	public User getOwner() {
-		return owner;
 	}
 }

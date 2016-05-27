@@ -11,9 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import ir.stocks.controller.Controller;
 import ir.stocks.data.OrderRepo;
 import ir.stocks.data.ShareRepo;
-import ir.stocks.data.UserRepo;
 import ir.stocks.domain.Order;
-import ir.stocks.domain.OrderType;
+import ir.stocks.domain.OrderCommand;
 import ir.stocks.domain.Share;
 import ir.stocks.domain.Symbol;
 import ir.stocks.domain.User;
@@ -51,7 +50,7 @@ public class Create extends Controller {
 							new Symbol((String)request.getAttribute("symbolid"), ((User) request.getAttribute("user")).getUsername() ),
 							Integer.valueOf(request.getParameter("price")),
 							Integer.valueOf(request.getParameter("quantity")),
-							"BUY"
+							OrderCommand.BUY
 							)
 			);
 		}  catch (SQLException e) {

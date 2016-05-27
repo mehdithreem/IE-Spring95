@@ -43,7 +43,7 @@ public class DepositRequestRepo {
 		
 		System.out.println("Accepted");
 		r.setStatus(Status.ACCEPTED);
-		UserRepo.getRepository().updateUserCredit(r.getId(), r.getAmount());
+		UserRepo.getRepository().depositUserCredit(r.getId(), r.getAmount());
 	}
 	
 	public void rejectRequest(Integer reqId) throws SQLException {
