@@ -19,14 +19,14 @@ create table user_roles (
 	references user(username) ON DELETE CASCADE
 );
 
--- create table deposit_user (
--- 	reqid integer not null,
--- 	username varchar(20) not null,
--- 	status varchar(10) not null,
--- 	amount integer not null,
--- 	constraint username_fk foreign key(username)
--- 	references user(username) ON DELETE CASCADE
--- )
+create table deposit_user (
+ 	reqid integer not null,
+ 	username varchar(20) not null,
+ 	status varchar(10) not null,
+ 	amount integer not null,
+ 	constraint username_fk foreign key(username)
+ 	references user(username) ON DELETE CASCADE
+);
 
 create table symbol (
  	ownerid integer not null,
@@ -35,30 +35,48 @@ create table symbol (
 	primary key (id)
 );
 	
--- create table share (
--- 	userid integer not null,
--- 	symbolid varchar(10) not null,
--- 	quantity integer not null,
--- 	primary key (userid, symbolid),
--- 	constraint userid_fk foreign key(userid)
--- 	references user(userid),
--- 	constraint symbolid_fk foreign key(symbolid)
--- 	references symbol(symbolid) on delete casecade
--- );
+create table share (
+ 	userid integer not null,
+ 	symbolid varchar(10) not null,
+ 	quantity integer not null,
+ 	primary key (userid, symbolid),
+ 	constraint userid_fk foreign key(userid)
+ 	references user(userid),
+ 	constraint symbolid_fk foreign key(symbolid)
+ 	references symbol(symbolid) on delete casecade
+);
 
--- create table order (
--- orderid integer not null,
--- 	ownerid integer not null,
--- 	symbolid varchar(10) not null,
--- 	price integer not null,
--- 	quantity integer not null,
--- 	type varchar(3) not null,
--- 	command bit not null,
--- 	constraint userid_fk foreign key(userid)
--- 	references user(userid),
--- 	constraint symbolid_fk foreign key(symbolid)
--- 	references symbol(symbolid) on delete casecade
--- );
+create table order (
+ 	orderid varchar(10) not null,
+ 	ownerid varchar(10) not null,
+ 	symbolid varchar(10) not null,
+ 	price integer not null,
+ 	quantity integer not null,
+ 	type varchar(3) not null,
+ 	command bit not null,
+ 	constraint userid_fk foreign key(userid)
+ 	references user(userid),
+ 	constraint symbolid_fk foreign key(symbolid)
+ 	references symbol(symbolid)
+);
+
+create table transaction (
+	transid integer not null,
+	buyerid varchar(10) not null,
+	ownerid varchar(10) not null,
+	symbolid varchar(10) not null,
+	price integer not null,
+ 	quantity integer not null,
+ 	type varchar(3) not null,
+ 	status varchar(10),
+ 	primary key (transid),
+ 	constraint buyerid_fk foreign key(buyerid)
+ 	references user(buyerid),
+ 	constraint sellerid_fk foreign key(sellerid)
+ 	references user(sellerid),
+ 	constraint symbolid_fk foreign key(symbolid)
+ 	references symbol(symbolid)
+);
 
 -- create table ordertype (
 -- 	type varchar(3) not null,
