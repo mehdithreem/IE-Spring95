@@ -150,4 +150,28 @@ public class OrderRepo {
 			
 		return ret;
 	}
+	
+	public List<Order> getPendings(String username) throws SQLException {
+		List<Order> ret = new ArrayList<Order>();
+		
+		Connection con = JDBCUtil.getConnection();
+		Statement st = con.createStatement();
+		ResultSet rs = 
+				st.executeQuery("select * from orders where status = '" 
+				+ Status.PENDING.toString() + "' and ownerid = '"+ username + "';");
+		
+		while (rs.next()) {
+			Order newOrder = new Order(rs.getString("ownerid"),
+					rs.getString("symbolid"),
+					rs.getInt("price"),
+					rs.getInt("quantity"),
+					OrderCommand.valueOf(rs.getString("command")));
+			
+			newOrder.setStatus(Status.valueOf(rs.getString("status")));
+			newOrder.setId(rs.getInt("orderid"));
+			ret.add(newOrder);
+		}
+			
+		return ret;
+	}
 }

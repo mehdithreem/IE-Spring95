@@ -23,6 +23,11 @@ create table user_roles (
 	references user(username) ON DELETE CASCADE
 );
 
+
+insert into user values ('admin', 'admin', 'Super', 'Power', 'good@universe.com', 0);
+insert into user_roles values ('admin', 'admin');
+insert into user_roles values ('admin', 'member');
+
 -- create table deposit_user (
 --  	reqid integer not null,
 --  	username varchar(20) not null,
@@ -33,10 +38,11 @@ create table user_roles (
 -- );
 
 create table symbol (
- 	ownerid integer not null,
+ 	ownerid varchar(20) not null,
 	id varchar(10) not null,
-	status varchar(10),
-	primary key (id)
+	primary key (id),
+	constraint symb_username_fk foreign key(ownerid)
+	references user(username) ON DELETE CASCADE
 );
 	
 create table share (
@@ -75,7 +81,3 @@ create table transaction (
  	time varchar(50) not null,
  	primary key (transid)
 );
-
-insert into user values ('admin', 'admin', 'Super', 'Power', 'good@universe.com', 0);
-insert into user_roles values ('admin', 'admin');
-insert into user_roles values ('admin', 'member');

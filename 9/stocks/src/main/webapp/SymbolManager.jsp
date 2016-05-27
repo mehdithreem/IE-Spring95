@@ -37,7 +37,7 @@
 	     <% } %>
 	     
 	     <%if(request.getAttribute("message") != null && ((String) request.getAttribute("message")).equals("needs-approve")) {%>
-			<div class="ui red message">
+			<div class="ui green message">
 			<div class="header">
 			نیاز به تایید برای عرضه‌ی سهام می‌باشد.
 			</div>

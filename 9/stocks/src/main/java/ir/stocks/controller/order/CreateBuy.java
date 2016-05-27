@@ -60,6 +60,8 @@ public class CreateBuy extends Controller {
 			} catch (SQLException e) {
 				request.setAttribute("error", "instr-not-exist");
 			}
-		}	
+		}
+		
+		request.getRequestDispatcher("/app/ordermanager").forward(request, response);
 	}
 }

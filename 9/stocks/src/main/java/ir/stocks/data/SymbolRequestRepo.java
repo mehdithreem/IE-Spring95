@@ -1,6 +1,5 @@
 package ir.stocks.data;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

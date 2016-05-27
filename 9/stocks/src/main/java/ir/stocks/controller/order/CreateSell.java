@@ -41,7 +41,6 @@ public class CreateSell extends Controller {
 		
 		User user = (User) request.getAttribute("user");
 		
-		//sell
 		if (!user.hasEnoughShare(request.getParameter("instrument"), quantity)) {
 			request.setAttribute("error", "not-enough-share");
 		} else {
@@ -62,5 +61,7 @@ public class CreateSell extends Controller {
 				request.setAttribute("error", "instr-not-exist");
 			}
 		}	
+		
+		request.getRequestDispatcher("/app/ordermanager").forward(request, response);
 	}
 }
