@@ -3,8 +3,8 @@ package ir.stocks.data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import ir.stocks.domain.Transaction;
 
@@ -18,7 +18,7 @@ public class TransactionRepo {
 		return repo;
 	}
 	
-	private Integer idgen = (int) LocalDate.now().toEpochDay();
+	private Integer idgen = (int) LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
 	
 	private Integer generateID() {
 		return idgen++;
@@ -32,14 +32,14 @@ public class TransactionRepo {
 			target.setId(id);
 			
 			st = con.prepareStatement("insert into order values (?,?,?,?,?,?,?);");
-			st.setLong(1, id);
+			st.setInt(1, id);
 			st.setString(2, target.getBuyer());
 			st.setString(3, target.getSeller());
 			st.setString(4, target.getSymbol());
-			st.setLong(5, target.getPrice());
-			st.setLong(6, target.getQuantity());
+			st.setInt(5, target.getPrice());
+			st.setInt(6, target.getQuantity());
 			st.setString(7, target.getTime());
-			st.executeQuery();
+			st.executeUpdate();
 			
 			con.close();
 		} catch (SQLException e) {

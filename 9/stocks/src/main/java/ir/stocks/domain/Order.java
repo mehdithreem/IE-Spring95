@@ -29,7 +29,7 @@ public class Order {
 		quantity = _quantity;
 		command = _command;
 		
-		if (price > max)
+		if (price*quantity > max)
 			status = Status.PENDING;
 		else
 			status = Status.ACCEPTED;

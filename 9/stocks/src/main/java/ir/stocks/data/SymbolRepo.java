@@ -1,6 +1,5 @@
 package ir.stocks.data;
 
-import ir.stocks.domain.Status;
 import ir.stocks.domain.Symbol;
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,22 +27,6 @@ public class SymbolRepo {
 		
 		con.close();
 		return true;
-	}
-
-	public void rejectRequest(String symbolid) throws SQLException {
-		Connection con = JDBCUtil.getConnection();
-		PreparedStatement pstmt = con.prepareStatement( "update symbol set status = '" + Status.REJECTED + "' where id = ?; " );
-		pstmt.setString(1, symbolid);
-		pstmt.executeUpdate( );
-		con.close();
-	}
-	
-	public void acceptRequest(String symbolid) throws SQLException {
-		Connection con = JDBCUtil.getConnection();
-		PreparedStatement pstmt = con.prepareStatement( "update symbol set status = '" + Status.ACCEPTED + "' where id = ?; ");
-		pstmt.setString(1, symbolid);
-		pstmt.executeUpdate( );
-		con.close();
 	}
 	
 	public List<String> getNames() throws SQLException {

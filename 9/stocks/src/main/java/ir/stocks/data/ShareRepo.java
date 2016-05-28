@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
 import ir.stocks.domain.Share;
 
 public class ShareRepo {
@@ -25,7 +23,7 @@ public class ShareRepo {
 		st = con.prepareStatement("INSERT INTO share values (?, ? ,? )");
 		st.setString(1, target.getOwner());
 		st.setString(2, target.getSymbol());
-		st.setLong(3, target.getQuantity());
+		st.setInt(3, target.getQuantity());
 		st.executeUpdate();
 		
 		con.close();
@@ -55,17 +53,16 @@ public class ShareRepo {
 		try {
 			Connection con = JDBCUtil.getConnection();
 			PreparedStatement pstmt = con.prepareStatement( "update share set quantity = quantity + ? where symbolid = ? and userid = ? ;");
-			pstmt.setString(1, String.valueOf(count));
+			pstmt.setInt(1, count);
 			pstmt.setString(2, sym);
-			pstmt.setString(3, username);
-			
+			pstmt.setString(3, username);		
 			
 			if (pstmt.executeUpdate() < 1) {
 				
 				PreparedStatement pstmt2 = con.prepareStatement( "insert into share values ( ?, ?, ? );");
 				pstmt2.setString(1, username);
 				pstmt2.setString(2, sym);
-				pstmt2.setString(3, String.valueOf(count));
+				pstmt2.setInt(3, count);
 				pstmt2.executeUpdate();
 			
 			}

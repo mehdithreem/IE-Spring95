@@ -95,7 +95,6 @@ public class UserRepo {
 	
 	public List<Role> getUserRoles(String username) throws SQLException {
 		Connection con = JDBCUtil.getConnection();
-		Statement st = con.createStatement();
 		
 		List<Role> ret = new ArrayList<Role>();
 		PreparedStatement pstmt = con.prepareStatement("select role from user_roles where username= ? ;");

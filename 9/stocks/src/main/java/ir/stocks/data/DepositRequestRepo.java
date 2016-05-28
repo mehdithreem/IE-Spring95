@@ -1,6 +1,8 @@
 package ir.stocks.data;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +22,7 @@ public class DepositRequestRepo {
 	}
 	
 	private static Map<Integer, DepositRequest> repomap = new HashMap<Integer, DepositRequest>();
-	private Integer idgen = 0;
+	private Integer idgen = (int) LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
 	
 	private Integer generateID() {
 		return idgen++;

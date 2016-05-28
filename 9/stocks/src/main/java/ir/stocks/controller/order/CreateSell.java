@@ -59,6 +59,7 @@ public class CreateSell extends Controller {
 				}
 			} catch (SQLException e) {
 				request.setAttribute("error", "instr-not-exist");
+				e.printStackTrace();
 			}
 		}	
 		

@@ -49,7 +49,7 @@ public class CreateBuy extends Controller {
 						,request.getParameter("instrument")
 						,price
 						,quantity
-						,OrderCommand.SELL);
+						,OrderCommand.BUY);
 				OrderRepo.getRepository().create(ord);
 				
 				if (ord.getStatus().equals(Status.PENDING)) {

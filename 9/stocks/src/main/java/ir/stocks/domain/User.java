@@ -77,13 +77,10 @@ public class User {
 		Share shr;
 		try {
 			shr = ShareRepo.getRepository().getShare(username, sym);
-			System.out.println(String.valueOf(shr.getQuantity() + " <---"));
+			System.out.println(String.valueOf(shr.getQuantity() + " <---" ));
 		} catch (SQLException e) {
-			System.out.println("null <---");
 			return false;
 		}
-
-		if (shr == null) return false;
 
 		if (shr.getQuantity() < count)
 			return false;

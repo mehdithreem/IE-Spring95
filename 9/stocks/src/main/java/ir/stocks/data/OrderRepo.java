@@ -5,7 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -25,7 +26,7 @@ public class OrderRepo {
 		}
 		return repo;
 	}
-	private static Integer idgen = (int) LocalDate.now().toEpochDay();
+	private static Integer idgen = (int) LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
 	
 	private Integer generateID() {
 		return idgen++;
@@ -40,11 +41,11 @@ public class OrderRepo {
 		
 		PreparedStatement st = null;
 		st = con.prepareStatement("INSERT INTO orders values (?, ? ,? ,? ,? ,? ,?)");
-		st.setLong(1, id);
+		st.setInt(1, id);
 		st.setString(2, target.getOwner());
 		st.setString(3, target.getInstrument());
-		st.setLong(4, target.getPrice());
-		st.setLong(5, target.getQuantity());
+		st.setInt(4, target.getPrice());
+		st.setInt(5, target.getQuantity());
 		st.setString(6, target.getCommand().toString());
 		st.setString(7, target.getStatus().toString());
 		st.executeUpdate();
@@ -53,13 +54,56 @@ public class OrderRepo {
 	}
 	
 	public void delete(Order target) {
-		String orderId = String.valueOf(target.getId());
 		String query = "delete from orders where orderid = ? ;";
 		try {
 			Connection con = JDBCUtil.getConnection();			
 			PreparedStatement pstmt = con.prepareStatement( query );
-			pstmt.setString( 1, orderId); 
-			pstmt.executeQuery( );
+			pstmt.setInt( 1, target.getId()); 
+			pstmt.executeUpdate( );
+			
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Order getOrder(Integer ordid) {
+		String query = "select * from orders where orderid = ?;";
+		Order o = null;
+		
+		try {
+			Connection con = JDBCUtil.getConnection();
+			PreparedStatement pstmt = con.prepareStatement( query );
+			pstmt.setInt(1, ordid); 
+			ResultSet rs = pstmt.executeQuery( );
+			con.close();
+			
+			if(rs.next()) {
+				o = new Order(
+						rs.getString("ownerid")
+						,rs.getString("symbolid")
+						,rs.getInt("price")
+						,rs.getInt("quantity")
+						,OrderCommand.valueOf(rs.getString("command")));
+				o.setId(rs.getInt("orderid"));
+				o.setStatus(Status.valueOf(rs.getString("status")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		return o;
+	}
+	
+	public void updateStatus(Order target) {
+		String query = "update orders set status = ? where orderid = ? ;";
+		try {
+			Connection con = JDBCUtil.getConnection();			
+			PreparedStatement pstmt = con.prepareStatement( query );
+			pstmt.setString( 1, target.getStatus().toString()); 
+			pstmt.setInt( 2, target.getId()); 
+			pstmt.executeUpdate( );
 			
 			con.close();
 		} catch (SQLException e) {
@@ -68,14 +112,13 @@ public class OrderRepo {
 	}
 	
 	public void updateQuantity(Order target) {
-		String orderId = String.valueOf(target.getId());
 		String query = "update orders set quantity = ? where orderid = ? ;";
 		try {
 			Connection con = JDBCUtil.getConnection();			
 			PreparedStatement pstmt = con.prepareStatement( query );
 			pstmt.setInt(1, target.getQuantity());
-			pstmt.setString(2, orderId); 
-			pstmt.executeQuery();
+			pstmt.setInt(2, target.getId()); 
+			pstmt.executeUpdate();
 			
 			con.close();
 		} catch (SQLException e) {
@@ -104,7 +147,7 @@ public class OrderRepo {
 		}
 		
 		try {
-			String query = "select * from orders where symbolid = ? and command = ? ;";
+			String query = "select * from orders where symbolid = ? and command = ? and status = '" + Status.ACCEPTED.toString() + "';";
 			Connection con = JDBCUtil.getConnection();
 			PreparedStatement pstmt = con.prepareStatement( query );
 			pstmt.setString( 1, sym); 
@@ -130,12 +173,12 @@ public class OrderRepo {
 		return q;
 	}
 	
-	public List<Order> getPendings() throws SQLException {
+	public List<Order> getAll() throws SQLException {
 		List<Order> ret = new ArrayList<Order>();
 		
 		Connection con = JDBCUtil.getConnection();
 		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("select * from orders where status = '" + Status.PENDING.toString() + "';");
+		ResultSet rs = st.executeQuery("select * from orders;");
 		while (rs.next()) {
 			Order newOrder = new Order(rs.getString("ownerid"),
 					rs.getString("symbolid"),
@@ -151,14 +194,13 @@ public class OrderRepo {
 		return ret;
 	}
 	
-	public List<Order> getPendings(String username) throws SQLException {
+	public List<Order> getAll(String username) throws SQLException {
 		List<Order> ret = new ArrayList<Order>();
 		
 		Connection con = JDBCUtil.getConnection();
 		Statement st = con.createStatement();
 		ResultSet rs = 
-				st.executeQuery("select * from orders where status = '" 
-				+ Status.PENDING.toString() + "' and ownerid = '"+ username + "';");
+				st.executeQuery("select * from orders where ownerid = '"+ username + "';");
 		
 		while (rs.next()) {
 			Order newOrder = new Order(rs.getString("ownerid"),

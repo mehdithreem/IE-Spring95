@@ -36,7 +36,7 @@ $('select.dropdown')
 	     <%if(request.getAttribute("error") != null && ((String) request.getAttribute("error")).equals("not-enough-share")) {%>
 			<div class="ui red message">
 			<div class="header">
-			اعتبار کافی نیست.
+			تعداد سهام کافی نیست.
 			</div>
 			</div>
 	     <% } %>
@@ -78,9 +78,9 @@ $('select.dropdown')
 		List<Order> ords = null;
 		
 		if (role.get(Role.ADMIN) || role.get(Role.FINANCE)) {
-			ords = ordRepo.getPendings();
+			ords = ordRepo.getAll();
 		} else if (role.get(Role.MEMBER)) {
-			ords = ordRepo.getPendings(user);
+			ords = ordRepo.getAll(user);
 		}
 		%>
 	
@@ -124,7 +124,7 @@ $('select.dropdown')
 			      <div class="field">
 			        <input placeholder="ارزش هر سهم" name="price" type="number">
 			      </div>
-			    <input class="ui submit button" type="submit" value="ثبت درخواست خرید سهام"></input>
+			    <input class="ui submit button" type="submit" value="ثبت درخواست فروش سهام"></input>
 			  </div>
 			</form>
 		</div>
@@ -151,20 +151,20 @@ $('select.dropdown')
 		      <td><%=r.getPrice() %></td>
 		      <td><%=r.getCommand().toString() %></td>
 		      <td><%=r.getStatus() %></td>
-		   <%--  <% if ((role.get(Role.ADMIN) || role.get(Role.FINANCE)) && r.getStatus().equals(Status.PENDING)) { %>
+		   <% if ((role.get(Role.ADMIN) || role.get(Role.FINANCE)) && r.getStatus().equals(Status.PENDING)) { %>
 			  	<td>
-			  		<form method="post" action="<c:url value="/company/symbol/accept" />">
-			  			<input type="hidden" name="symbolid" value="<%= r.getSymbol()%>"/>
+			  		<form method="post" action="<c:url value="/finance/order/accept" />">
+			  			<input type="hidden" name="orderid" value="<%= r.getId()%>"/>
 			  			<input class="ui blue button" type="submit" value="تایید"></input>
 					</form>
 				</td>
 				<td>
-					<form method="post" action="<c:url value="/company/symbol/reject" />">
-			  		<input type="hidden" name="symbolid" value="<%= r.getSymbol()%>"/>
+					<form method="post" action="<c:url value="/finance/order/reject" />">
+			  		<input type="hidden" name="orderid" value="<%= r.getId()%>"/>
 			  			<input class="red ui button" type="submit" value="رد"></input>
 					</form>
 			  	</td>
-			<%} %> --%>
+			<%} %>
 		    </tr>
 		  <% } %>
 		  </tbody>
