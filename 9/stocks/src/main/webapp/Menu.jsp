@@ -50,6 +50,11 @@
   <% } %>
   
   <div class="left menu">
+  <a class="item" style="background-color: blue; color :white;" href="#">
+    	<i class="copyright icon"></i>
+    	coolest symbol: 
+    	<%= TransactionRepo.getRepository().getMostFolan() %>
+    </a>
   <% if (user == null) {%>
     <a class="item" style="background-color: red; color :white;" href="<c:url value='/forcelogin'/>">
     	<i class="sign in icon"></i>

@@ -27,13 +27,19 @@ public class SetRoles extends Controller {
 		
 		List<Role> roles = new ArrayList<Role>();
 		for(Role r : Role.values()) {
-			if (request.getParameter(r.toString()) != null)
+			if (request.getParameter(r.toString()) != null) {
 				roles.add(r);
+				System.out.println(r.toString());
+			}
 		}
+		
+		System.out.println("here2");
 		
 		try {
 			UserRepo.getRepository().setUserRoles(request.getParameter("target-user"), roles);
+			System.out.println("here3");
 		} catch (SQLException e) {
+			e.printStackTrace();
 			response.setStatus(406);
 		}
 		

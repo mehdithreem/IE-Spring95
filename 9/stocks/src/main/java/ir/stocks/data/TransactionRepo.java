@@ -2,6 +2,7 @@ package ir.stocks.data;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -45,5 +46,29 @@ public class TransactionRepo {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String getMostFolan() {
+		String retStr = "";
+		try {
+			Connection con = JDBCUtil.getConnection();
+			PreparedStatement st = null;
+			
+			st = con.prepareStatement("SELECT symbolid FROM TRANSACTION where price = (select MAX(price) from TRANSACTION)");
+			ResultSet rs = st.executeQuery();
+			
+			if (rs.next()) {
+				retStr = rs.getString("symbolid");
+			}
+			
+			System.out.println(retStr);
+			
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return retStr;
 	}
 }

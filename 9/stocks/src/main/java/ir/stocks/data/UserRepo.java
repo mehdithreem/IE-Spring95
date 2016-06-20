@@ -112,7 +112,9 @@ public class UserRepo {
 		Connection con = JDBCUtil.getConnection();
 		PreparedStatement pstmt = con.prepareStatement("delete from user_roles where username= ? ;");
 		pstmt.setString(1, username);
-		pstmt.executeQuery( );
+		pstmt.executeUpdate( );
+		
+		System.out.println("Roles deleted");
 		
 		for(Role r : roles) {
 			pstmt = con.prepareStatement("insert into user_roles values(?, ?);");
@@ -120,6 +122,8 @@ public class UserRepo {
 			pstmt.setString(2, r.toString().toLowerCase());
 			pstmt.executeUpdate();
 		}
+		
+		System.out.println("Roles updated");
 		
 		con.close();
 	}
